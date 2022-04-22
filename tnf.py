@@ -1,11 +1,7 @@
 
 import copy
 import csv
-from doctest import SKIP
-from hashlib import new
-from http.cookiejar import CookiePolicy
 import itertools
-from operator import index
 from os import remove
 import random
 import sys
