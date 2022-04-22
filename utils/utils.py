@@ -419,6 +419,7 @@ def is_dnf_equal_tnf(dnf, tnf):
     if not (MiniSAT("pos.cnf") == "SAT"):
         remove("pos.cnf")
     else:
+        remove("pos.cnf")
         return False
     C = Circuit()
     C.list_to_circ(f2toAB)
@@ -426,6 +427,7 @@ def is_dnf_equal_tnf(dnf, tnf):
     if not (MiniSAT("pos.cnf") == "SAT"):
         remove("pos.cnf")
     else:
+        remove("pos.cnf")
         return False
     return True
 
@@ -442,6 +444,7 @@ def is_stnf_implies_tnf(tnf, stnf):
         remove("pos.cnf")
         return True
     else:
+        remove("pos.cnf")
         return False
 
 def neg_separated_formulas_to_ab(separated_formulas):
