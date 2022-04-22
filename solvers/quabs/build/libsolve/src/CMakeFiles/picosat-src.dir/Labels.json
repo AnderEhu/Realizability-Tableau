@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/picosat-src"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/picosat-src.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/picosat-src-complete.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-build.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-configure.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-download.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-install.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-mkdir.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-patch.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"picosat-src"
+		],
+		"name" : "picosat-src"
+	}
+}

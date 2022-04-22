@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsat_minisat.a CMakeFiles/sat_minisat.dir/satsolver_minisat.cc.o
+/usr/bin/ranlib libsat_minisat.a

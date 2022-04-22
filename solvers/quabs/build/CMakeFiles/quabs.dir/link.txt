@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -rdynamic CMakeFiles/quabs.dir/src/main.c.o -o quabs  src/libquabs-base.a libsolve/src/libsolve.a libsolve/src/libsat_cryptominisat.a -lm libsolve/src/cmsat-prefix/src/cmsat-build/lib/libcryptominisat5.a -lpthread 

@@ -1,0 +1,12 @@
+# Target labels
+ cmsat
+# Source files and their labels
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/cmsat
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/cmsat.rule
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/cmsat-complete.rule
+/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-build.rule
+/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-configure.rule
+/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-download.rule
+/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-install.rule
+/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-mkdir.rule
+/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-patch.rule

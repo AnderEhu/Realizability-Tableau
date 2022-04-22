@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsat_lingeling.a CMakeFiles/sat_lingeling.dir/satsolver_lingeling.c.o
+/usr/bin/ranlib libsat_lingeling.a

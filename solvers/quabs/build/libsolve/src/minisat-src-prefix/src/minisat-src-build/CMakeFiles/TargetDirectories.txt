@@ -1,0 +1,10 @@
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/install/strip.dir
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/install.dir
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/list_install_components.dir
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/minisat.dir
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/minisat_core.dir
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/rebuild_cache.dir
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/uninstall.dir
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/install/local.dir
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/minisat_simp.dir
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-build/CMakeFiles/edit_cache.dir

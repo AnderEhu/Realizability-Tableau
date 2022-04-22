@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/lingeling-src"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/lingeling-src.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/lingeling-src-complete.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-build.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-configure.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-download.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-install.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-mkdir.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-patch.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"lingeling-src"
+		],
+		"name" : "lingeling-src"
+	}
+}

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsat_cryptominisat.a CMakeFiles/sat_cryptominisat.dir/satsolver_cryptominisat.cc.o
+/usr/bin/ranlib libsat_cryptominisat.a

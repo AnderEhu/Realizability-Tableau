@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsolve.a CMakeFiles/solve.dir/bit_vector.c.o CMakeFiles/solve.dir/map.c.o CMakeFiles/solve.dir/queue.c.o CMakeFiles/solve.dir/vector.c.o
+/usr/bin/ranlib libsolve.a

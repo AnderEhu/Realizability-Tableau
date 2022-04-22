@@ -1,0 +1,13 @@
+# Target labels
+ lingeling-src
+# Source files and their labels
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/lingeling-src
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/lingeling-src.rule
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/lingeling-src-complete.rule
+/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-build.rule
+/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-configure.rule
+/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-download.rule
+/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-install.rule
+/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-mkdir.rule
+/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-patch.rule
+/home/alephnoell/quabs/build/libsolve/src/lingeling-src-prefix/src/lingeling-src-stamp/lingeling-src-update.rule

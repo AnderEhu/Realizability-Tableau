@@ -1,0 +1,3 @@
+repository='external project URL'
+module='http://fmv.jku.at/lingeling/lingeling-bbc-9230380-160707.tar.gz'
+tag=''
