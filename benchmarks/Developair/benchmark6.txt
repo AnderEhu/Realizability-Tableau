@@ -1,0 +1,66 @@
+~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4
+((~(~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4) & X (~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4)) -> X (X (~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4)))
+((~((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p4_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p4_6_e))) -> X X controllable_6_p11)
+((~((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p5_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p5_6_e))) -> X X controllable_6_p13)
+((~((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p6_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p6_6_e))) -> X X controllable_6_p12)
+((~((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p7_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p7_6_e))) -> X X controllable_6_p10)
+((~((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p8_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p8_6_e))) -> X (X (~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4)))
+((~((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p4_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p4_6_e))) -> X X controllable_6_p19)
+((~((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p5_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p5_6_e))) -> X X controllable_6_p21)
+((~((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p6_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p6_6_e))) -> X X controllable_6_p20)
+((~((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p7_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p7_6_e))) -> X X controllable_6_p18)
+((~((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p8_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p8_6_e))) -> X (X (~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & controllable_6_s4)))
+((~((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & controllable_6_s4 & p6_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & controllable_6_s4 & p6_6_e))) -> X (X (~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4)))
+((~((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & controllable_6_s4 & p8_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & controllable_6_s4 & p8_6_e))) -> X (X (~controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4)))
+((~(~controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4) & X (~controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4)) -> X (X (~controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4)))
+((~((~controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & controllable_6_p22)) & X ((~controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & controllable_6_p22))) -> X X controllable_6_variables_sys_7)
+((~((~controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & controllable_6_p9)) & X ((~controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & controllable_6_p9))) -> X (X ((controllable_6_variables_sys_10 & ~controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4))))
+((~(~controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4) & X (~controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4)) -> X X controllable_6_variables_sys_11)
+((~((~controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p8_6_e)) & X ((~controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4 & p8_6_e))) -> X (X ((controllable_6_variables_sys_8 & ~controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & controllable_6_s4))))
+(~controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & controllable_6_s4 -> controllable_6_variables_sys_9)
+((~((~controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & controllable_6_s4 & controllable_6_p17)) & X ((~controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & controllable_6_s4 & controllable_6_p17))) -> X (X ((controllable_6_variables_sys_12 & controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4))))
+((~(controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4) & X (controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4)) -> X X controllable_6_variables_sys_11)
+((~((controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4 & p8_6_e)) & X ((controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4 & p8_6_e))) -> X (X (controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4)))
+((~((controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p8_6_e)) & X ((controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p8_6_e))) -> X (X (controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4)))
+controllable_6_p0
+controllable_6_p2
+~(controllable_6_s1 & ~controllable_6_s2 & controllable_6_s3 & controllable_6_s4)
+~(controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4)
+~(controllable_6_s1 & controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4)
+~(controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & ~controllable_6_s4)
+~(controllable_6_s1 & controllable_6_s2 & controllable_6_s3 & controllable_6_s4)
+~(controllable_6_p9 & controllable_6_p22)
+~(controllable_6_p10 & controllable_6_p11)
+~(controllable_6_p10 & controllable_6_p12)
+~(controllable_6_p10 & controllable_6_p13)
+~(controllable_6_p11 & controllable_6_p12)
+~(controllable_6_p11 & controllable_6_p13)
+~(controllable_6_p12 & controllable_6_p13)
+~(controllable_6_p18 & controllable_6_p19)
+~(controllable_6_p18 & controllable_6_p20)
+~(controllable_6_p18 & controllable_6_p21)
+~(controllable_6_p19 & controllable_6_p20)
+~(controllable_6_p19 & controllable_6_p21)
+~(controllable_6_p20 & controllable_6_p21)
+p1_6_e
+p3_6_e
+p4_6_e -> p1_6_e
+p4_6_e -> p3_6_e
+~(p4_6_e & p5_6_e)
+~(p4_6_e & p6_6_e)
+~(p4_6_e & p7_6_e)
+~(p4_6_e & p8_6_e)
+p5_6_e -> p1_6_e
+p5_6_e -> p3_6_e
+~(p5_6_e & p6_6_e)
+~(p5_6_e & p7_6_e)
+~(p5_6_e & p8_6_e)
+p6_6_e -> p1_6_e
+p6_6_e -> p3_6_e
+~(p6_6_e & p7_6_e)
+~(p6_6_e & p8_6_e)
+p7_6_e -> p1_6_e
+p7_6_e -> p3_6_e
+~(p7_6_e & p8_6_e)
+p8_6_e -> p1_6_e
+p8_6_e -> p3_6_e

@@ -1,0 +1,68 @@
+(p8_8_e -> ~(controllable_8_variables_sys_3))
+(p9_8_e -> (controllable_8_variables_sys_3 & controllable_8_p18))
+(p10_8_e -> (controllable_8_variables_sys_3 & controllable_8_p19))
+(p11_8_e -> (controllable_8_variables_sys_3 & controllable_8_p20))
+((p7_8_e & p5_8_e) -> ~(controllable_8_variables_sys_3))
+(((p7_8_e & p15_8_e) & p4_8_e) -> (controllable_8_variables_sys_3 & controllable_8_p18))
+(((p7_8_e & p14_8_e) & p3_8_e) -> (controllable_8_variables_sys_3 & controllable_8_p19))
+((p7_8_e & p12_8_e) -> (controllable_8_variables_sys_3 & controllable_8_p20))
+((~((controllable_8_p18 | (controllable_8_p19 | controllable_8_p20))) & X (((controllable_8_p18 | controllable_8_p19) | controllable_8_p20))) -> (G [2, 101] controllable_8_variables_sys_0))
+((~(controllable_8_variables_sys_0) & (G [1, 100] controllable_8_variables_sys_0)) -> (G [101, 200] ~(controllable_8_variables_sys_0)))
+((~((controllable_8_p18 & ~(controllable_8_variables_sys_0))) & (G [1, 100] (controllable_8_p18 & ~(controllable_8_variables_sys_0)))) -> (G [101, 300] ~(controllable_8_variables_sys_3)))
+((~((controllable_8_p19 & ~(controllable_8_variables_sys_0))) & (G [1, 100] (controllable_8_p19 & ~(controllable_8_variables_sys_0)))) -> (G [101, 500] ~(controllable_8_variables_sys_3)))
+((~((controllable_8_p20 & ~(controllable_8_variables_sys_0))) & (G [1, 100] (controllable_8_p20 & ~(controllable_8_variables_sys_0)))) -> (G [101, 200] ~(controllable_8_variables_sys_3)))
+((~(controllable_8_variables_sys_0) & X controllable_8_variables_sys_0) -> X X controllable_8_variables_sys_2)
+((~(~(controllable_8_variables_sys_0)) & X ~(controllable_8_variables_sys_0)) -> X X ~(controllable_8_variables_sys_2))
+controllable_8_p2
+controllable_8_p17
+controllable_8_p18 -> controllable_8_p2
+controllable_8_p18 -> controllable_8_p17
+~(controllable_8_p18 & controllable_8_p19)
+~(controllable_8_p18 & controllable_8_p20)
+controllable_8_p19 -> controllable_8_p2
+controllable_8_p19 -> controllable_8_p17
+~(controllable_8_p19 & controllable_8_p20)
+controllable_8_p20 -> controllable_8_p2
+controllable_8_p20 -> controllable_8_p17
+p1_8_e
+p6_8_e
+p0_8_e
+p13_8_e
+p3_8_e -> p0_8_e
+~(p3_8_e & p12_8_e)
+p4_8_e -> p0_8_e
+p4_8_e -> p3_8_e
+~(p4_8_e & p12_8_e)
+~(p4_8_e & p14_8_e)
+p5_8_e -> p0_8_e
+p5_8_e -> p3_8_e
+p5_8_e -> p4_8_e
+~(p5_8_e & p12_8_e)
+~(p5_8_e & p14_8_e)
+~(p5_8_e & p15_8_e)
+p7_8_e -> p1_8_e
+p7_8_e -> p6_8_e
+~(p7_8_e & p8_8_e)
+~(p7_8_e & p9_8_e)
+~(p7_8_e & p10_8_e)
+~(p7_8_e & p11_8_e)
+p8_8_e -> p1_8_e
+p8_8_e -> p6_8_e
+~(p8_8_e & p9_8_e)
+~(p8_8_e & p10_8_e)
+~(p8_8_e & p11_8_e)
+p9_8_e -> p1_8_e
+p9_8_e -> p6_8_e
+~(p9_8_e & p10_8_e)
+~(p9_8_e & p11_8_e)
+p10_8_e -> p1_8_e
+p10_8_e -> p6_8_e
+~(p10_8_e & p11_8_e)
+p11_8_e -> p1_8_e
+p11_8_e -> p6_8_e
+p12_8_e -> p13_8_e
+p12_8_e -> p14_8_e
+p12_8_e -> p15_8_e
+p14_8_e -> p13_8_e
+p14_8_e -> p15_8_e
+p15_8_e -> p13_8_e
