@@ -1,6 +1,4 @@
-from asyncio import futures
 from os import remove
-from temporal_formula import TemporalFormula
 from z3 import *
 from tools import MiniSAT
 from circuit import Circuit
@@ -176,6 +174,7 @@ def print_bica(formula):
 
 
 def getStrToList(formulaStr):
+    from temporal_formula import TemporalFormula
     return TemporalFormula(formulaStr).ab
 
 def get_literals(formula):
@@ -348,6 +347,7 @@ def is_valid_model(model):
             lneg = l[1:]
         else:
             if is_always(l) or is_eventually(l):
+                from temporal_formula import TemporalFormula
                 lneg = TemporalFormula("-"+l).str
                 
             else:
