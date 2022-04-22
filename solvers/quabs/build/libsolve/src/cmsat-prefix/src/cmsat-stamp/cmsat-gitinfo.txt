@@ -1,0 +1,3 @@
+repository='https://github.com/msoos/cryptominisat.git'
+module=''
+tag='origin'

@@ -1,0 +1,40 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/cmsat"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/cmsat.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/cmsat-complete.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-build.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-configure.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-download.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-install.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-mkdir.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-stamp/cmsat-patch.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"cmsat"
+		],
+		"name" : "cmsat"
+	}
+}

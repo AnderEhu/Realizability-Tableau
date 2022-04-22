@@ -1,0 +1,3 @@
+repository='https://github.com/stp/minisat.git'
+module=''
+tag='origin'

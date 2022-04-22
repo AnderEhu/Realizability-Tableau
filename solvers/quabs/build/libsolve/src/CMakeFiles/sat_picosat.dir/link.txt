@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsat_picosat.a CMakeFiles/sat_picosat.dir/satsolver_picosat.c.o
+/usr/bin/ranlib libsat_picosat.a

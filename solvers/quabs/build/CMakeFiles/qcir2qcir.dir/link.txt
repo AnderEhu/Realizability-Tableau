@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG -rdynamic CMakeFiles/qcir2qcir.dir/src/qcir2qcir.c.o -o qcir2qcir  src/libquabs-base.a libsolve/src/libsolve.a -lm 

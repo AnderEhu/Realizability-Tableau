@@ -1,0 +1,82 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_1134d/fast && make[3]: se entra en el directorio '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+/usr/bin/make  -f CMakeFiles/cmTC_1134d.dir/build.make CMakeFiles/cmTC_1134d.dir/build
+make[4]: se entra en el directorio '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1134d.dir/src.c.o
+/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_1134d.dir/src.c.o -c /home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_1134d
+/snap/cmake/870/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1134d.dir/link.txt --verbose=1
+/usr/bin/cc -rdynamic CMakeFiles/cmTC_1134d.dir/src.c.o -o cmTC_1134d 
+/usr/bin/ld: CMakeFiles/cmTC_1134d.dir/src.c.o: en la función `main':
+src.c:(.text+0x46): referencia a `pthread_create' sin definir
+/usr/bin/ld: src.c:(.text+0x52): referencia a `pthread_detach' sin definir
+/usr/bin/ld: src.c:(.text+0x5e): referencia a `pthread_cancel' sin definir
+/usr/bin/ld: src.c:(.text+0x6f): referencia a `pthread_join' sin definir
+collect2: error: ld returned 1 exit status
+make[4]: *** [CMakeFiles/cmTC_1134d.dir/build.make:99: cmTC_1134d] Error 1
+make[4]: se sale del directorio '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+make[3]: *** [Makefile:127: cmTC_1134d/fast] Error 2
+make[3]: se sale del directorio '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Performing C++ SOURCE FILE Test HAVE_FLAG_-Wno-bitfield-constant-conversion failed with the following output:
+Change Dir: /home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_bfe35/fast && make[3]: Entering directory '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+/usr/bin/make  -f CMakeFiles/cmTC_bfe35.dir/build.make CMakeFiles/cmTC_bfe35.dir/build
+make[4]: Entering directory '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_bfe35.dir/src.cxx.o
+/usr/bin/c++   -fno-stack-protector    -DHAVE_FLAG_-Wno-bitfield-constant-conversion -Wno-bitfield-constant-conversion -o CMakeFiles/cmTC_bfe35.dir/src.cxx.o -c /home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp/src.cxx
+<command-line>: warning: ISO C++11 requires whitespace after the macro name
+cc1plus: warning: unrecognized command line option '-Wno-bitfield-constant-conversion'
+Linking CXX executable cmTC_bfe35
+/snap/cmake/870/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bfe35.dir/link.txt --verbose=1
+/usr/bin/c++  -fno-stack-protector    -O2 -Wl,--discard-all -Wl,--build-id=sha1 -static -Wl,--whole-archive -ldl -lpthread -Wl,--no-whole-archive -static   -rdynamic CMakeFiles/cmTC_bfe35.dir/src.cxx.o -o cmTC_bfe35 
+make[4]: Leaving directory '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+make[3]: Leaving directory '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_FLAG_-Wjump-misses-init failed with the following output:
+Change Dir: /home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_cefad/fast && make[3]: Entering directory '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+/usr/bin/make  -f CMakeFiles/cmTC_cefad.dir/build.make CMakeFiles/cmTC_cefad.dir/build
+make[4]: Entering directory '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_cefad.dir/src.cxx.o
+/usr/bin/c++   -fno-stack-protector -Wlogical-op -Wrestrict -Wnull-dereference    -DHAVE_FLAG_-Wjump-misses-init -Wjump-misses-init -o CMakeFiles/cmTC_cefad.dir/src.cxx.o -c /home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp/src.cxx
+cc1plus: warning: command line option '-Wjump-misses-init' is valid for C/ObjC but not for C++
+<command-line>: warning: ISO C++11 requires whitespace after the macro name
+Linking CXX executable cmTC_cefad
+/snap/cmake/870/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cefad.dir/link.txt --verbose=1
+/usr/bin/c++  -fno-stack-protector -Wlogical-op -Wrestrict -Wnull-dereference    -O2 -Wl,--discard-all -Wl,--build-id=sha1 -static -Wl,--whole-archive -ldl -lpthread -Wl,--no-whole-archive -static   -rdynamic CMakeFiles/cmTC_cefad.dir/src.cxx.o -o cmTC_cefad 
+make[4]: Leaving directory '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+make[3]: Leaving directory '/home/alephnoell/quabs/build/libsolve/src/cmsat-prefix/src/cmsat-build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main() { return 0; }

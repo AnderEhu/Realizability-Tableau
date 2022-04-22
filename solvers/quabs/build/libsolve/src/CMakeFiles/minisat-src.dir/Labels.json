@@ -1,0 +1,40 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/minisat-src"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/minisat-src.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/minisat-src-complete.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-build.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-configure.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-download.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-install.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-mkdir.rule"
+		},
+		{
+			"file" : "/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-patch.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"minisat-src"
+		],
+		"name" : "minisat-src"
+	}
+}

@@ -1,0 +1,13 @@
+# Target labels
+ picosat-src
+# Source files and their labels
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/picosat-src
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/picosat-src.rule
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/picosat-src-complete.rule
+/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-build.rule
+/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-configure.rule
+/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-download.rule
+/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-install.rule
+/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-mkdir.rule
+/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-patch.rule
+/home/alephnoell/quabs/build/libsolve/src/picosat-src-prefix/src/picosat-src-stamp/picosat-src-update.rule

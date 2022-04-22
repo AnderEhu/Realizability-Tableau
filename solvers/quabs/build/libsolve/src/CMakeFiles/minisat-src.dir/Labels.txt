@@ -1,0 +1,12 @@
+# Target labels
+ minisat-src
+# Source files and their labels
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/minisat-src
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/minisat-src.rule
+/home/alephnoell/quabs/build/libsolve/src/CMakeFiles/minisat-src-complete.rule
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-build.rule
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-configure.rule
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-download.rule
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-install.rule
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-mkdir.rule
+/home/alephnoell/quabs/build/libsolve/src/minisat-src-prefix/src/minisat-src-stamp/minisat-src-patch.rule
