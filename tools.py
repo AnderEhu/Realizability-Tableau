@@ -24,7 +24,7 @@ def ander_to_str(formula):
             return  formula[0] + ander_to_str(formula[1])
         else:
             sub_str = ander_to_str(formula[1])
-            if sub_str.startswith('-') and formula[0] == 'X':
+            if sub_str.startswith('-') and 'X[' in formula[0]:
                 return '-' + formula[0] + "(" + sub_str[1:] +")"
             else:
                 return formula[0] + "(" + sub_str +")"

@@ -80,7 +80,7 @@ class TNF:
 
     def calculate_verifications(self):
         start = time.time()
-        self.is_dnf_equal_tnf = utils.is_dnf_equal_tnf(self.formula, self.tnf_formula)
+        self.is_dnf_equal_tnf = utils.are_equal_formulas(self.formula, self.tnf_formula)
         self.__add_time(start, "VERIFICATION(s)")
         self.__add_info("DNF = TNF",  self.is_dnf_equal_tnf)
 
