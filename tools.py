@@ -6,6 +6,7 @@ Created on Wed May 12 19:21:33 2021
 @author: alephnoell
 """
 from os import popen, remove
+import time
 
 #################################################
 ### ================= Tools ================= ###
@@ -115,4 +116,11 @@ def BICA(pos_name, neg_name, C):
             n_primes = int(info[3][:-1])    
     bica.close()
     remove("bica_file.txt")
-    return essential_primes, primes_found     
+    return essential_primes, primes_found    
+
+def __print_info(self):
+    print("=========================== INFO ===========================\n")
+    for key, value in self.info.items():
+        print(">>", key, ": ", value, "\n")        
+    print(">>", "TOTAL(s)", ": ", time.time()-self.start, "\n")
+    print("=========================== INFO ===========================") 

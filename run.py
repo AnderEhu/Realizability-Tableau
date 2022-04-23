@@ -1,5 +1,11 @@
+from errno import EHOSTUNREACH
 import random
 import sys
+
+from matplotlib import lines
+from dnf_formula import calculate_dnf
+from separated_formula import are_equal_formulas, calculate_separated_formulas, separated_formula_to_ab
+from subsumption import calculate_subsumptions
 from temporal_formula import TemporalFormula
 from tnf import TNF
 
@@ -29,39 +35,36 @@ def automatic_benchmark_generator(n):
 
 
 
-def leer_fichero():
-        if len(sys.argv) == 1:
-            path = "tnf/benchmarks/Overleaf/bench2"
+def leer_fichero(n = False):
+
+    path = sys.argv[1]
+    with open(path, 'r') as f:
+        lines = f.readlines()
+        if n:
+            selected_to_read = random.sample(range(0, len(lines)-1), n)
+            print(selected_to_read, "\n")
+            new_f = [line for i, line in enumerate(lines) if i in selected_to_read]
+            sf = str_to_sf(new_f)
         else:
-            path = sys.argv[1]
-        mode = 1
-        if len(sys.argv) == 3:
-            mode = sys.argv[2]
-        with open(path, 'r') as f:
-            parseFormulas = ['&', 'True']
-            formulasStr = "(True)"
-            for formulaStr in f:
-                if formulaStr == "\n" or formulaStr=="":
-                    continue
-                formulaStr = "&("+formulaStr.replace("\n", "").replace(" ", "")+")"
-                formulasStr+=formulaStr
+            sf = str_to_sf(lines)
+    f.close()  
+    return sf
 
-            formula = TemporalFormula(formulasStr)
-            formula_ab = formula.ab
-            parseFormulas.append(formula_ab)
+def str_to_sf(f):
+    ab = TemporalFormula(f).ab
+    dnf = calculate_dnf(ab)
+    subsumptions = calculate_subsumptions(ab)
+    sf = calculate_separated_formulas(dnf, subsumptions)
+    return sf
 
-        f.close()  
-        return parseFormulas
+def ejecute(automatic = True):
 
-def ejecute(automatic = False):
-    
-    validLines = False
-    if automatic:
-        parseFormulas, validLines = automatic_benchmark_generator(2)
-    else:
-        parseFormulas = leer_fichero()
-    print(parseFormulas)
-    TNF(parseFormulas, validLines)
+    sf = leer_fichero()
+    #print(parseFormulas)
+    #TNF(parseFormulas, selected_formulas)
+    tnf = TNF(sf).calculate_tnf()
+    if not are_equal_formulas(sf, tnf):
+        exit(0)
     if automatic:
         ejecute()
 

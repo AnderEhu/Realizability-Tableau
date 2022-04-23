@@ -1,23 +1,21 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jun 26 13:34:12 2021
-
-Author: Noel Arteche
-
-"""
-from tools import execute_command, BICA, MiniSAT
+from defer import return_value
+from subsumption import subsumes
+from tools import BICA, MiniSAT
 from time import time
 from circuit import Circuit
 from os import remove
 
+def calculate_dnf(formula):
+    return prime_cover_via_BICA(formula)
+
+
 def prime_cover_via_BICA(formula,
-                         do_delete=True,         # delete the temporary files
-                         do_write=False,         # write the output to the file obtained_primes.txt
-                         do_print_primes=False,  # print the found prime cover
-                         do_print_times=False,   # print the running times
-                         do_print_summary=False, # print a summary of the run
-                         for_testing=False):     # return more info
+                        do_delete=True,         # delete the temporary files
+                        do_write=False,         # write the output to the file obtained_primes.txt
+                        do_print_primes=False,  # print the found prime cover
+                        do_print_times=False,   # print the running times
+                        do_print_summary=False, # print a summary of the run
+                        for_testing=False):     # return more info
 
     """
     This procedure takes as input a Boolean formula and returns a list of sets,
@@ -32,6 +30,11 @@ def prime_cover_via_BICA(formula,
         ['&', 'True', ['&', ['->', ['&', ['-', 'p'], ['&', ['X', 'p'], ['&', ['X', ['X', 'p'] ...
 
     The flags allow to display information and delete temporary files.
+
+    - Created on Sat Jun 26 13:34:12 2021
+
+    - Author: Noel Arteche
+
 
     """
 
@@ -123,35 +126,52 @@ def prime_cover_via_BICA(formula,
     else:
         return essential_primes
 
+def print_bica(formula):
+    formulaStr = ""
+    for f in formula:
+        modelStr = ""
+        print(f)
+        for l in list(f):
+            print(l)
+            if modelStr == "":
+                modelStr += l
+            else:
+                modelStr += " ∧ " + l
+        if formulaStr == "":
+                formulaStr += l
+        else:
+            formulaStr += " v " +l
+    return formulaStr
 
-#####################################################
-###                   Examples                    ###
-#####################################################
-
-""" prime_cover_via_BICA(['->', 'c', ["G[0,3]", ['-', 'c']]], do_delete=True,        # delete the temporary files
-                                                                 do_write=False,        # write the output to a file
-                                                                 do_print_primes=True,  # print the found prime cover
-                                                                 do_print_times=True,   # print the running times
-                                                                 do_print_summary=True, # print a summary of the run
-                                                                 for_testing=False)     # return more info """
- 
-# prime_cover_via_BICA(benchmarks.ander_1(),
-#                                                                         do_delete=True,
-#                                                                         do_write=False,
-#                                                                         do_print_primes=True,
-#                                                                         do_print_times=True,
-#                                                                         do_print_summary=True)
-
-# prime_cover_via_BICA(['|', ['X', ['X', ['-', 'p']]],['X', ['X', 'p']]],
-#                                                                         do_delete=True,
-#                                                                         do_write=False,
-#                                                                         do_print_primes=True,
-#                                                                         do_print_times=True,
-#                                                                         do_print_summary=True)
-
-# prime_cover_via_BICA(['&', ['X', ['X', ['-', 'p']]],['X', ['X', 'p']]],
-#                                                                         do_delete=True,
-#                                                                         do_write=False,
-#                                                                         do_print_primes=True,
-#                                                                         do_print_times=True,
-#                                                                         do_print_summary=True)
+def dnf_to_separated_formulas(models, subsumptions):
+    from temporal_formula import TemporalFormula
+    processing_models = []
+    for model in models:
+        literals = set()
+        futures = set()
+        for l in list(model):
+            if "X" in l or "F[" in l or "G[" in l:
+                if not futures:
+                    futures.add(l)
+                    continue
+                delete_futures = set()
+                for fi in list(futures):
+                    if subsumes(fi, l, subsumptions):
+                        break
+                    elif subsumes(l, fi, subsumptions):
+                        for fj in list(futures):
+                            if subsumes(l, fj, subsumptions):
+                                delete_futures.add(fj)
+                        
+                        futures.add(l)
+                        break
+                    else:
+                        futures.add(l)
+                futures = futures - delete_futures
+                       
+            else:
+                literals.add(l)
+        if futures == set():
+            futures = {"True"}
+        processing_models.append([literals, [futures]])
+    return processing_models

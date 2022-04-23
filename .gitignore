@@ -1,3 +1,6 @@
 __pycache__/
 solvers/bica/__pycache__/
 utils/__pycache__/
+neg.cnf
+pos.cnf
+.vscode/
