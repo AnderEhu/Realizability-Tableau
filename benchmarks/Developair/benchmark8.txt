@@ -1,3 +1,7 @@
+Initial Formula
+True
+
+Safety Formula
 (p8_8_e -> ~(controllable_8_variables_sys_3))
 (p9_8_e -> (controllable_8_variables_sys_3 & controllable_8_p18))
 (p10_8_e -> (controllable_8_variables_sys_3 & controllable_8_p19))
@@ -24,6 +28,8 @@ controllable_8_p19 -> controllable_8_p17
 ~(controllable_8_p19 & controllable_8_p20)
 controllable_8_p20 -> controllable_8_p2
 controllable_8_p20 -> controllable_8_p17
+
+Environment Global Constraints
 p1_8_e
 p6_8_e
 p0_8_e

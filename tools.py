@@ -5,6 +5,7 @@ Created on Wed May 12 19:21:33 2021
 
 @author: alephnoell
 """
+from cmath import inf
 from os import popen, remove
 import time
 
@@ -25,14 +26,20 @@ def ander_to_str(formula):
             return  formula[0] + ander_to_str(formula[1])
         else:
             sub_str = ander_to_str(formula[1])
-            if sub_str.startswith('-') and 'X[' in formula[0]:
+            if sub_str.startswith('-') and 'X' in formula[0]:
                 return '-' + formula[0] + "(" + sub_str[1:] +")"
             else:
                 return formula[0] + "(" + sub_str +")"
     else:
         leftFormula = ander_to_str(formula[1])
         rightFormula = ander_to_str(formula[2])
-        return "(" + leftFormula + ")" + formula[0] + "(" + rightFormula + ")"
+        res = "(" + leftFormula + ")" + formula[0] + "(" + rightFormula + ")"
+        if len(formula) > 3:
+            for f in formula[3:]:
+                extra_formula =  ander_to_str(f)
+                res = res + formula[0] + "(" + extra_formula + ")"
+
+        return res
 
 
 def execute_command(command):
@@ -118,9 +125,15 @@ def BICA(pos_name, neg_name, C):
     remove("bica_file.txt")
     return essential_primes, primes_found    
 
-def __print_info(self):
+def print_info(info):
     print("=========================== INFO ===========================\n")
-    for key, value in self.info.items():
+    for key, value in info.items():
         print(">>", key, ": ", value, "\n")        
-    print(">>", "TOTAL(s)", ": ", time.time()-self.start, "\n")
     print("=========================== INFO ===========================") 
+
+def add_info(info, key, value):
+    if isinstance(value, float):
+        info[key] = round(value, 6)
+    else:    
+        info[key] = value
+

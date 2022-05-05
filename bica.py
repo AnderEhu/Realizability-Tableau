@@ -1,12 +1,9 @@
-from defer import return_value
-from subsumption import subsumes
 from tools import BICA, MiniSAT
 from time import time
 from circuit import Circuit
 from os import remove
 
-def calculate_dnf(formula):
-    return prime_cover_via_BICA(formula)
+
 
 
 def prime_cover_via_BICA(formula,
@@ -143,35 +140,3 @@ def print_bica(formula):
             formulaStr += " v " +l
     return formulaStr
 
-def dnf_to_separated_formulas(models, subsumptions):
-    from temporal_formula import TemporalFormula
-    processing_models = []
-    for model in models:
-        literals = set()
-        futures = set()
-        for l in list(model):
-            if "X" in l or "F[" in l or "G[" in l:
-                if not futures:
-                    futures.add(l)
-                    continue
-                delete_futures = set()
-                for fi in list(futures):
-                    if subsumes(fi, l, subsumptions):
-                        break
-                    elif subsumes(l, fi, subsumptions):
-                        for fj in list(futures):
-                            if subsumes(l, fj, subsumptions):
-                                delete_futures.add(fj)
-                        
-                        futures.add(l)
-                        break
-                    else:
-                        futures.add(l)
-                futures = futures - delete_futures
-                       
-            else:
-                literals.add(l)
-        if futures == set():
-            futures = {"True"}
-        processing_models.append([literals, [futures]])
-    return processing_models

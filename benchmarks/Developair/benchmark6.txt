@@ -1,3 +1,7 @@
+Initial Formula
+~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4
+
+Safety Formula
 ~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4
 ((~(~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4) & X (~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & ~controllable_6_s4)) -> X (X (~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4)))
 ((~((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p4_6_e)) & X ((~controllable_6_s1 & ~controllable_6_s2 & ~controllable_6_s3 & controllable_6_s4 & p4_6_e))) -> X X controllable_6_p11)
@@ -42,6 +46,8 @@ controllable_6_p2
 ~(controllable_6_p19 & controllable_6_p20)
 ~(controllable_6_p19 & controllable_6_p21)
 ~(controllable_6_p20 & controllable_6_p21)
+
+Environment Global Constraints
 p1_6_e
 p3_6_e
 p4_6_e -> p1_6_e

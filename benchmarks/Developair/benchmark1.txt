@@ -1,0 +1,8 @@
+Initial Formula
+~controllable_s1 & ~controllable_s2 & ~controllable_s3
+
+Safety Formula
+(p_e & a & Xb ) | (p_e & a & G[1,5](a & b)) |  (X-c)
+
+Environment Global Constraints
+-p_e

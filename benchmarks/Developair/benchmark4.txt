@@ -1,3 +1,7 @@
+Initial Formula
+~controllable_s1 & ~controllable_s2 & ~controllable_s3
+
+Safety Formula
 ((~(controllable_s1 & ~controllable_s2 & ~controllable_s3) & X (controllable_s1 & ~controllable_s2 & ~controllable_s3)) -> X X controllable_variables_sys_1)
 ((~((p10_e & ~controllable_s1 & controllable_s2 & ~controllable_s3)) & X ((p10_e & ~controllable_s1 & controllable_s2 & ~controllable_s3))) -> X (X (~controllable_s1 & controllable_s2 & controllable_s3)))
 ((~(p12_e) & X p12_e) -> X (X (controllable_s1 & ~controllable_s2 & controllable_s3)))
@@ -9,6 +13,8 @@
 ~(controllable_s1 & controllable_s2 & controllable_s3)
 controllable_p1
 controllable_p8
+
+Environment Global Constraints
 p2_e
 p9_e
 p3_e

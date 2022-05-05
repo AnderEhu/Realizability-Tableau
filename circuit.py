@@ -227,7 +227,6 @@ class Circuit:
 
             gate_name = ander_to_str(f)
             C.add_gate(gate_name, operator, operands)
-
         return gate_name
 
     def add_variables_from_formula_as_list(self, formula_as_list):

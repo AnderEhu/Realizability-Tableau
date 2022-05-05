@@ -1,4 +1,7 @@
+Initial Formula
 ~controllable_7_s1 & ~controllable_7_s2
+
+Safety Formula
 ((~(p8_e) & X p8_e) -> (F [2, 11] controllable_7_p74))
 ((~(p38_e) & X p38_e) -> (F [2, 11] controllable_7_p73))
 ((~((controllable_7_p74 & p28_e)) & X ((controllable_7_p74 & p28_e))) -> (F [2, 11] controllable_7_p95))
@@ -145,6 +148,8 @@ controllable_7_p82 -> controllable_7_p83
 ~(controllable_7_p90 & controllable_7_p91)
 ~(controllable_7_p90 & controllable_7_p92)
 ~(controllable_7_p91 & controllable_7_p92)
+
+Environment Global Constraints
 p3_e
 p21_e
 p11_e
