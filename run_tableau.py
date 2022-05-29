@@ -1,5 +1,7 @@
 import random
 import sys
+
+from matplotlib.pyplot import close
 from tableau import Tableau
 from temporal_formula import TemporalFormula
 
@@ -71,11 +73,20 @@ def split_formulas(lines):
     return I, G, C
 
 
+def print_log_time(log_time):
+    log_time_sorted_keys = sorted(log_time, key=log_time.get, reverse=True)
+    with open("log_time.txt", "w") as f:
+        for r in log_time_sorted_keys:
+            f.write(f'Function {r} : {log_time[r]:.8f} seconds\n')
+    f.close()
 
 
 def execute():
-
+    log_time = {}
     initial_formula, safety_formula, env_constraints = leer_fichero()
-    Tableau(initial_formula, safety_formula, env_constraints)
+    Tableau(initial_formula, safety_formula, env_constraints, log_time = log_time)
+    print_log_time(log_time)
+
+
 
 execute()

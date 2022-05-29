@@ -3,8 +3,8 @@ a
 
 Safety Formula
 a -> c
-p_e -> Xa
--p_e -> G[2, 10]-c
+p_e -> F[0,100]-c
+-p_E -> F[0,100]a
 
 Environment Global Constraints
 True

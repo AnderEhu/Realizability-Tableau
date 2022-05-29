@@ -1,10 +1,10 @@
 Initial Formula
-a
+True
 
 Safety Formula
 a -> c
-p_e -> Xa
--p_e -> G[2, 10]-c
+Xp_e -> F[1,2]a
+-Xp_e -> F[1,10]-c
 
 Environment Global Constraints
 True

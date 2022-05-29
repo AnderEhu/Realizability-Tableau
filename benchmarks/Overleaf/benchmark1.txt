@@ -1,10 +1,8 @@
 Initial Formula
-a
+True
 
 Safety Formula
-a -> c
-p_e -> Xa
--p_e -> G[2, 10]-c
+Xp_e <--> Xs
 
 Environment Global Constraints
 True

@@ -137,3 +137,20 @@ def add_info(info, key, value):
     else:    
         info[key] = value
 
+
+def analysis(method):
+    def timed(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = method(*args, **kwargs)
+        end_time = time.perf_counter()
+        total_time = float("{:.8f}".format(end_time - start_time))
+        name = kwargs.get('log_name', method.__name__.upper())
+        if 'log_time' in kwargs:
+            if name in kwargs['log_time']:
+                kwargs['log_time'][name] = float("{:.8f}".format(kwargs['log_time'][name] + total_time))
+            else:
+                kwargs['log_time'][name] = total_time
+        return result
+    return timed
+
+

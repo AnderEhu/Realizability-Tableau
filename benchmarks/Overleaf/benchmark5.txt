@@ -4,7 +4,7 @@ a
 Safety Formula
 a -> c
 p_e -> Xa
--p_e -> G[2, 10]-c
+-p_e -> G[2,10]-c
 
 Environment Global Constraints
 True
