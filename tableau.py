@@ -98,13 +98,9 @@ class Tableau:
     def __init__(self, initial_formula_str, safety_formula_str, env_constraints_str, **kwargs):
         self.strToAb = dict()
         
-        self.safety_formula = TemporalFormula(safety_formula_str, changeNegAlwaysEventually = True,  extract_negs_from_nexts = True, split_futures = True,  activate_type_of_variables = True, activate_subsumptions = False, activate_strToAb = True, **kwargs)
-        self.env_constraints = TemporalFormula(env_constraints_str, changeNegAlwaysEventually = True,  extract_negs_from_nexts = True, split_futures = True,  activate_type_of_variables = True, activate_subsumptions = False, activate_strToAb = True, **kwargs)
-        self.initial_formula = TemporalFormula(initial_formula_str, changeNegAlwaysEventually = True,  extract_negs_from_nexts = True, split_futures = True,  activate_type_of_variables = True, activate_subsumptions = False, activate_strToAb = True, **kwargs)
-        
-        #self.subsumption = calculate_subsumptions(self.init.type_of_variables, self.safety_formula.type_of_variables)
-        self.strToAb.update(self.safety_formula.strToAb)
-        self.strToAb.update(self.env_constraints.strToAb)
+        self.safety_formula = TemporalFormula(safety_formula_str, changeNegAlwaysEventually = True,  extract_negs_from_nexts = True, split_futures = True, **kwargs)
+        self.env_constraints = TemporalFormula(env_constraints_str, changeNegAlwaysEventually = True,  extract_negs_from_nexts = True, split_futures = True, **kwargs)
+        self.initial_formula = TemporalFormula(initial_formula_str, changeNegAlwaysEventually = True,  extract_negs_from_nexts = True, split_futures = True, **kwargs)
 
         self.env_vars = self.safety_formula.env_vars
         all_assignments = TemporalFormula.get_all_assignments(self.env_vars, **kwargs)

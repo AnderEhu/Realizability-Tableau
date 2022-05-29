@@ -59,9 +59,6 @@ class TemporalFormula(NodeVisitor):
             changeNegAlwaysEventually = False,
             extract_negs_from_nexts = True, 
             split_futures = False, 
-            activate_type_of_variables = False,
-            activate_subsumptions = False,
-            activate_strToAb = False,
             **kwargs):
 
         sys.setrecursionlimit(10000)
@@ -73,67 +70,8 @@ class TemporalFormula(NodeVisitor):
        
         self.ab = self.calculate_ab(formula, **kwargs)
     
-        if activate_type_of_variables:
-            self.type_of_variables = self.__empty_type_of_variables(**kwargs)
-            self.__calculate_type_of_variables(self.ab, **kwargs) 
-            if activate_subsumptions:
-                self.subsumptions = TemporalFormula.calculate_subsumptions(self.type_of_variables, self.type_of_variables,  **kwargs)
-            if activate_strToAb:
-                self.strToAb = self.__calculate_strToAb(self.ab, **kwargs)
 
-    @analysis
-    def __calculate_type_of_variables(self, formula, **kwargs):
-
-        if TemporalFormula.is_and(formula[0], **kwargs) or TemporalFormula.is_or(formula[0], **kwargs):
-            for i in range(1, len(formula)):
-                self.__calculate_type_of_variables(formula[i], **kwargs)
-        elif isinstance(formula, str): 
-            if formula != AUX_NODE:
-                self.type_of_variables['Var'].add(formula)
-        elif TemporalFormula.is_neg(formula[0], **kwargs):
-            if isinstance(formula[1], str): 
-                if formula[1] != AUX_NODE:
-                    self.type_of_variables['Var'].add(TemporalFormula.to_str(formula, **kwargs))
-            if TemporalFormula.is_next(formula[1][0], **kwargs):
-                self.type_of_variables['Next'].add(TemporalFormula.to_str(formula, **kwargs))
-            if TemporalFormula.is_eventually(formula[1][0], **kwargs):
-                self.type_of_variables['Eventually'].add(TemporalFormula.to_str(formula, **kwargs))
-            if TemporalFormula.is_always(formula[1][0], **kwargs):
-                self.type_of_variables['Always'].add(TemporalFormula.to_str(formula, **kwargs))
-
-        else:
-            if TemporalFormula.is_next(formula[0], **kwargs):
-                self.type_of_variables['Next'].add(TemporalFormula.to_str(formula, **kwargs))
-            if TemporalFormula.is_eventually(formula[0], **kwargs):
-                self.type_of_variables['Eventually'].add(TemporalFormula.to_str(formula, **kwargs))
-            if TemporalFormula.is_always(formula[0], **kwargs):
-                self.type_of_variables['Always'].add(TemporalFormula.to_str(formula, **kwargs))
-    @analysis        
-    def __empty_type_of_variables(self, **kwargs):
-        type_of_variables = dict()
-        type_of_variables['Var'] = set()
-        type_of_variables['Next'] = set()
-        type_of_variables['Eventually'] = set()
-        type_of_variables['Always'] = set()
-        return type_of_variables
-
-    @analysis
-    def __calculate_strToAb(self, formula, **kwargs):
-
-        if isinstance(formula, str):
-            neg_formula = TemporalFormula.simple_negation_ab(formula, **kwargs)
-            neg_formula_str = TemporalFormula.to_str(neg_formula, **kwargs)
-            strToAb = {formula: formula, neg_formula_str: neg_formula}
-        else:
-            neg_formula = TemporalFormula.neg_formula_ab(formula, **kwargs)
-            neg_formula_str = TemporalFormula.to_str(neg_formula, **kwargs)
-            formula_str = TemporalFormula.to_str(formula, **kwargs)
-            strToAb = {formula_str: formula, neg_formula_str: neg_formula}
-            for i in range(1, len(formula)):
-                strToAb_sub_formula = self.__calculate_strToAb(formula[i], **kwargs)
-                strToAb.update(strToAb_sub_formula)
-                
-        return strToAb
+    
     @analysis    
     def calculate_ab(self, formula, **kwargs):
         """
@@ -1206,29 +1144,6 @@ class TemporalFormula(NodeVisitor):
 
 
         return dnf
-
-    @staticmethod
-    @analysis
-    def calculate_subsumptions(dict1, dict2, info = dict(), **kwargs):
-        start = time.time()
-        subsumptions = dict()
-        for formulas1 in list(dict1.values()):
-            for formulas2 in list(dict2.values()):
-                for formula1 in formulas1:
-                    for formula2 in formulas2:
-                        if formula1 == formula2 or not formula1 or not formula2:
-                            continue
-                        if TemporalFormula.subsumes(formula1, formula2, **kwargs):
-                            if formula1 not in subsumptions:
-                                subsumptions[formula1] = set()
-                            subsumptions[formula1].add(formula2)
-                        if TemporalFormula.subsumes(formula2, formula1, **kwargs):
-                            if formula2 not in subsumptions:
-                                subsumptions[formula2] = set()
-                            subsumptions[formula2].add(formula1)
-        add_info(info, "Subsumption(s)", time.time()-start)
-        add_info(info, "Subsumption(n)", len(subsumptions))
-        return subsumptions
 
 
     ################################
