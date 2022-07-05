@@ -1,4 +1,4 @@
-from tools import BICA, MiniSAT
+from tools import BICA, MiniSAT, ander_to_str, correct_bica_formula
 from time import time
 from circuit import Circuit
 from os import remove
@@ -34,7 +34,7 @@ def prime_cover_via_BICA(formula,
 
 
     """
-
+    formula =  correct_bica_formula(formula)
     t0 = time()
 
     # Create a circuit object with the benchmark to be used.
@@ -61,6 +61,8 @@ def prime_cover_via_BICA(formula,
     t2 = 0.0
 
     t_sat = time()
+
+
     if MiniSAT("pos.cnf") == "UNSAT":      # is a contradiction; return []
         essential_primes = []
         t_sat = time() - t_sat
@@ -127,7 +129,6 @@ def print_bica(formula):
     formulaStr = ""
     for f in formula:
         modelStr = ""
-        print(f)
         for l in list(f):
             print(l)
             if modelStr == "":
@@ -139,4 +140,5 @@ def print_bica(formula):
         else:
             formulaStr += " v " +l
     return formulaStr
+
 

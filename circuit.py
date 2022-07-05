@@ -1,3 +1,4 @@
+from ast import For
 from tools import ander_to_str, execute_command
 from os import remove
 
@@ -188,7 +189,6 @@ class Circuit:
         C = self
         f = formula_as_list
         gate_name = ""
-
         # Check if it's already a string:
         if isinstance(formula_as_list, str):
             return formula_as_list
@@ -238,7 +238,6 @@ class Circuit:
             formulas that are booleanized, that's why it returns the (modified) list.
         """
         C = self
-
         # Check if it's already a string:
         if isinstance(formula_as_list, str):
             if formula_as_list == 'True' or formula_as_list == 'False':
@@ -262,6 +261,8 @@ class Circuit:
             return formula_as_list
 
 
+
+
     def list_to_circ(self, formula_as_list):
         """
             Frontend recursive procedure that, given a formula in Ander's list format,
@@ -271,6 +272,7 @@ class Circuit:
 
         # Add the variables to the circuit and pull temporal negations to the front.
         formula_with_corrected_negations = C.add_variables_from_formula_as_list(formula_as_list)
+
         if 'True' in C.variables:
             print("ERROR: the constant True got in the list!")
             return
@@ -279,6 +281,7 @@ class Circuit:
 
         # Process the list recursively.
         output = C.process_list(formula_with_corrected_negations)
+        
 
         # Add dummy existential quantifiers.
         C.add_quantifier("exists", C.variables)

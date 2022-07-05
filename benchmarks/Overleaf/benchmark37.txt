@@ -1,0 +1,10 @@
+Initial Formula
+~controllable_s1 & ~controllable_s2 & ~controllable_s3
+
+Safety Formula
+
+((~(controllable_s1 & ~controllable_s2 & ~controllable_s3) & X (controllable_s1 & ~controllable_s2 & ~controllable_s3)) -> X X controllable_variables_sys_1)
+
+
+Environment Global Constraints
+True

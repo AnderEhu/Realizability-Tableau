@@ -1,6 +1,7 @@
 
 import copy
 import itertools
+from operator import index
 
 import time
 import multiprocessing as mp
@@ -8,7 +9,7 @@ from multiprocessing.pool import ThreadPool as Pool
 
 from analysis import calculate_analysis
 from temporal_formula import TemporalFormula
-from tools import add_info, print_info, analysis
+from tools import add_info, ander_to_str, print_info, analysis
 
 class TNF:
     def __init__(self, temporal_formula, 
@@ -20,7 +21,7 @@ class TNF:
                     activated_print_info = False, 
                     activated_calculate_analysis = False, 
                     activated_print_stnf = False,
-                    activate_verification = False,
+                    activate_verification = True,
                     **kwargs):
 
 
@@ -44,10 +45,12 @@ class TNF:
         
         self.separated_formulas = TemporalFormula.dnf_to_sf(self.dnf, self.subsumptions, self.env_vars, **kwargs)
 
+
         
         self.stnf_formula = self.calculate_stnf(**kwargs)
 
-        
+
+        #self.__print_tnf(self.stnf_formula)
         if activated_print_stnf:
             self.__print_tnf(self.stnf_formula, **kwargs)
         if activate_verification:
@@ -75,6 +78,7 @@ class TNF:
         print("Verifying DNF = TNF...")
         are_equivalent = self.are_equal_tnf_and_separated_formulas(**kwargs)
         add_info(self.info, "TNF = DNF(s): ", are_equivalent)
+        print(are_equivalent)
         return are_equivalent
 
     @analysis
@@ -83,7 +87,7 @@ class TNF:
         start = time.time()
         tnf_formula = self.tnf(**kwargs)
         add_info(self.info, "TNF(s): ", time.time()-start)
-        add_info(self.info, "TNF = DNF(s): ", self.are_equal_tnf_and_separated_formulas(**kwargs))
+        print("TNF = DNF(s): ", self.are_equal_tnf_and_separated_formulas(**kwargs))
 
         return tnf_formula
 
@@ -301,6 +305,7 @@ class TNF:
                 print("============>", v[0])
                 for vi in v[1]:
                     print("============>", vi)
+                print("\n")
 
             print("\n")
 
@@ -326,21 +331,19 @@ class TNF:
 
     @analysis
     def __get_separated_formula_compatibles_by_env(self, env_move, separated_formulas, **kwargs):
-        #start = time.time()
-        #if "compatibles(s)" not in self.info:
-            #self.info['compatibles(s)'] = 0
+
         compatibles = list()
         for sf in separated_formulas:
             env_sf = sf['X']
-            if env_sf <= env_move:
+            if self.__is_consistent(env_sf, env_move):
                 compatibles.append(sf)
-        #self.info['compatibles(s)'] += (time.time()-start)
         return compatibles
 
     @analysis
     def are_equal_tnf_and_separated_formulas(self, **kwargs):
         tnf_as_sf = self.tnf_to_separated_formulas(self.stnf_formula, **kwargs)
-        return TemporalFormula.are_equal_formulas(self.separated_formulas, tnf_as_sf, **kwargs)
+
+        return TemporalFormula.are_equal_formulas(self.separated_formulas, tnf_as_sf, self.formula[2], **kwargs)
 
     @analysis   
     def tnf_to_separated_formulas(self, tnf, **kwargs):
@@ -353,71 +356,106 @@ class TNF:
 
     @analysis
     def __stnf_step(self, formulas, **kwargs):
-        
+        formulas = copy.deepcopy(formulas)
         if not formulas:
-            return list()
+            return [[{'False'}, [{'X[1]False'}]]]
+        
+        if len(formulas) == 1:
+            return [[formulas[0]['Y'], formulas[0]['Futures']]]
 
 
         stnf, skip, literals_stack, futures_stack, index_stack  = list(), list(), list(), list(), list()
 
-        literals_stack.append(set())
-        futures_stack.append([{'False'}])
         index_stack.append(0)
+        literals_stack.append(copy.deepcopy(formulas[0]['Y']))
+        futures_stack.append(copy.deepcopy([formulas[0]['Futures'][0]]))
 
-        i = index_stack[0]
-        max_i = len(formulas) - 1
+        i = 1
 
         while index_stack:
-
-            literals_i = formulas[i]['Y']
-            current_l = literals_stack[-1]
+            assert len(futures_stack) == len(literals_stack) == len(index_stack)
+            literals_i = copy.deepcopy(formulas[i]['Y'])
+            current_l = copy.deepcopy(literals_stack[-1])
 
             if self.__is_consistent(current_l, literals_i, **kwargs):
                 union_literals = self.__union(current_l,literals_i, **kwargs)
                 if self.__not_visited(union_literals, skip, **kwargs):
-                    current_f = futures_stack[-1]
-                    futures_i = formulas[i]['Futures']
+                    futures_i = copy.deepcopy(formulas[i]['Futures'])
                     if union_literals != current_l:
+                        current_f = futures_stack[-1]
+                        union_futures = current_f[:]
+                        self.__append_future(union_futures, futures_i, **kwargs)
 
                         literals_stack.append(union_literals)
-
-                        if current_f != [{'False'}]:  
-                            union_futures = current_f[:]
-                            self.__append_future(union_futures, futures_i[0], **kwargs)
-                            futures_stack.append(union_futures)
-                        else:
-                            futures_stack.append([futures_i[0]])
-                        if i < max_i:
-                            index_stack.append(i+1)
-                        
-                        
+                        futures_stack.append(union_futures)
+                        index_stack.append(i)
                     else:
-                        if futures_i == [set()]:
-                            futures_stack = [{'True'}]
-                        elif current_f != [{'False'}]:
-                            self.__append_future(current_f, futures_i[0], **kwargs)
-                        else:
-                            futures_stack.pop()
-                            futures_stack.append([futures_i[0]])
+                        current_f = futures_stack[-1]
+                        self.__append_future(current_f, futures_i, **kwargs)
+
+
                     
-            i += 1            
-            if i >= len(formulas):
-                i = index_stack.pop()  
+            i += 1   
+            if i == len(formulas):         
                 move_literals = literals_stack.pop()
                 move_futures = futures_stack.pop()
-                if move_futures != [{'False'}]:
+                
+
+                if self.__can_be_inserted_to_stnf(move_literals, skip, **kwargs):
                     new_separated_formula = [move_literals, move_futures]
-                    if not skip:
-                        skip.append(set())
-                        stnf.append(new_separated_formula)
+                    self.__append_stnf(stnf, new_separated_formula)
+                skip.append(move_literals)
+
+                possible_i = index_stack.pop() + 1
+                valid_i = False
+                while not valid_i:
+
+                    if possible_i == len(formulas) and index_stack:
+                        literals_stack.pop()
+                        futures_stack.pop()
+                        possible_i = index_stack.pop() + 1
+                    if possible_i == len(formulas) and not index_stack:
+                        break
+                    elif formulas[possible_i]['Y'] in skip:
+                        possible_i+=1
                     else:
-                        if self.__insert_to_stnf(move_literals, skip, **kwargs):
-                            stnf.append(new_separated_formula)
-                    skip.append(move_literals)
-                    
+                        i = possible_i
+                        valid_i = True
+                        if not index_stack:
+                            index_stack.append(i)
+                            literals_stack.append(copy.deepcopy(formulas[i]['Y']))
+                            futures_stack.append(copy.deepcopy(formulas[i]['Futures']))
+
+                        
+        return stnf
                     
 
-        return stnf
+    def __append_stnf(self, stnf, new_separated_formula, delete_implicates = False):
+        stnf_i_remove = list()
+        if delete_implicates:
+            separated_formula_ab = TemporalFormula.separated_formula_strict_futures_to_ab(new_separated_formula[1])
+            for i, sf_i in enumerate(stnf):
+                sf_i_ab = TemporalFormula.separated_formula_strict_futures_to_ab(sf_i[1])
+                if TemporalFormula.is_implicated_strict_formulas(separated_formula_ab, sf_i_ab):
+                    #print(separated_formula_ab, "IMPLIES", sf_i_ab, "\n")
+                    return
+                if TemporalFormula.is_implicated_strict_formulas(sf_i_ab, separated_formula_ab):
+                    #print(sf_i_ab, "IMPLIES", separated_formula_ab, "\n")
+                    stnf_i_remove.append(i)
+
+                #print(sf_i_ab, "NOT IMPLIES", separated_formula_ab, "\n")
+        if stnf_i_remove:   
+            #print("stnf", stnf_i_remove)
+            stnf = [f for i, f in enumerate(stnf) if i not in stnf_i_remove]
+
+
+
+        stnf.append(new_separated_formula)
+
+
+
+
+
     
     @analysis
     def stnf(self, **kwargs):
@@ -433,24 +471,16 @@ class TNF:
         return stnf_formula
     
     @analysis
-    def __insert_to_stnf(self, possible_literals, skip, **kwargs):
-        start = time.time()
-        if "insert to tnf(s)" not in self.info:
-            self.info['insert to tnf(s)'] = 0
+    def __can_be_inserted_to_stnf(self, possible_literals, skip, **kwargs):
+
         for skip_i in skip:
             if possible_literals <= skip_i:
-                self.info['insert to tnf(s)'] += (time.time()-start)
                 return False
-        self.info['insert to tnf(s)'] += (time.time()-start)
         return True
 
     @analysis
     def __symmetric_difference(self, current_l, literals_i, **kwargs):
-        start = time.time()
-        if "symmetric_difference (s)" not in self.info:
-            self.info['symmetric_difference (s)'] = 0
         diff = current_l.symmetric_difference(literals_i)
-        self.info['symmetric_difference (s)'] += (time.time()-start)
         return diff
     
     @analysis
@@ -478,11 +508,6 @@ class TNF:
     
     @analysis
     def __not_visited(self, a, l, **kwargs):
-        #start = time.time()
-        #if "not_visited (s)" not in self.info:
-            #self.info["not_visited (s)"] = 0
-            
-        #self.info["not_visited (s)"] += (time.time()-start)
         return not a in l
 
     @analysis
@@ -522,16 +547,16 @@ class TNF:
     
     @analysis
     def __append_future(self,union_futures, futures_i, **kwargs):
-        #start = time.time()
-        #if "append future" not in self.info:
-            #self.info['append future'] = 0
-        if union_futures == [{'True'}] or futures_i == {'False'}:
-            return
-        elif futures_i == {'True'}:
-            union_futures = list()
-        else:
-            union_futures.append(futures_i)
-            #self.info['append future'] += (time.time()-start)
+        # if union_futures == [{'X[1]True'}]:
+        #     return 
+        # elif futures_i == {'X[1]True'}:
+        #     union_futures.clear()
+        #     union_futures.append({'X[1]True'})
+        # else:
+        for future_i in futures_i:
+            if future_i not in union_futures:
+                union_futures.append(future_i)
+        
 
     @analysis
     def get_all_minimal_X_coverings(self, **kwargs):
@@ -569,6 +594,46 @@ class TNF:
             res.append(len(value)-1)
 
         return res
+
+
+    @analysis
+    def get_all_minimal_X_coverings_sorted(self, **kwargs):
+        all_minimal_coverings = self.get_all_minimal_X_coverings()
+        sorted_minimal_coverings = TNF.sort_by_score_all_minimal_X_coverings(all_minimal_coverings)
+                
+
+        return sorted_minimal_coverings
+
+    @staticmethod
+    def sort_by_score_all_minimal_X_coverings(all_minimal_coverings):
+        scores = dict()
+        for i, minimal_X_covering in enumerate(all_minimal_coverings):
+            minimal_X_covering_score = TNF.score_minimal_covering(minimal_X_covering)
+            scores[i] = minimal_X_covering_score
+        
+        sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+
+        print(sorted_scores)
+
+        minimal_coverings_sorted_by_score = [all_minimal_coverings[i[0]] for i in sorted_scores]
+
+        return minimal_coverings_sorted_by_score
+
+    @staticmethod
+    def score_minimal_covering(minimal_X_covering):
+        score = 0
+        for _, child in minimal_X_covering.items():
+            score+=len(child)*5
+            for future in child:
+                if future == {'XTrue'}:
+                    score+=10000
+                else:
+                    score -= len(future)
+
+
+        return score
+    
+
 
 
 

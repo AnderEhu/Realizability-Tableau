@@ -154,3 +154,21 @@ def analysis(method):
     return timed
 
 
+def correct_bica_formula(formula):
+    if isinstance(formula, str):
+        if formula == 'True' or formula == "X[1]True" or  formula == '-False' or formula == "-X[1]False":
+            return ['|', 'aux_var', ['-', 'aux_var']]
+        elif formula == 'False' or formula == "X[1]False" or formula == '-True' or formula == "-X[1]True":
+            print("ffff", formula)
+            return ['&', 'aux_var', ['-', 'aux_var']]
+        elif formula[0] == "-" and len(formula) > 1:
+            return ['-', formula[1:]]
+        else:
+            return formula
+    else:
+        correct_formula = list()
+        for f_i in formula:
+            correct_formula.append(correct_bica_formula(f_i))
+        return correct_formula
+
+
