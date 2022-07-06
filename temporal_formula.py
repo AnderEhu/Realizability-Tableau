@@ -711,12 +711,32 @@ class TemporalFormula(NodeVisitor):
     @staticmethod
     @analysis
     def getStrToAb(formulaStr, strToAb, **kwargs):
-        # if formulaStr not in strToAb:
-        #     AbFormula = TemporalFormula(formulaStr, extract_negs_from_nexts=True, split_futures=False).ab
-        #     strToAb[formulaStr] = AbFormula
-        # return strToAb[formulaStr]
-        return TemporalFormula(formulaStr, changeNegAlwaysEventually=False, extract_negs_from_nexts=True,  split_futures = False, strict_future_formulas = False, **kwargs).ab
 
+        formula_splited = formulaStr.split("]", 1)
+        assert len(formula_splited) == 1 or len(formula_splited) == 2
+        if len(formula_splited) == 1:
+            formulaStr_with_out_operator = formulaStr
+        else:
+            formulaStr_with_out_operator = formula_splited[1]
+            temporal_operator = formula_splited[0] + "]"
+
+        if formulaStr_with_out_operator not in strToAb:
+            formulaAb_with_out_operator = TemporalFormula(formulaStr_with_out_operator, changeNegAlwaysEventually=False, extract_negs_from_nexts=True,  split_futures = False, strict_future_formulas = False, **kwargs).ab
+            strToAb[formulaStr_with_out_operator] = formulaAb_with_out_operator
+        
+        else:
+            formulaAb_with_out_operator = strToAb[formulaStr_with_out_operator]
+
+        if len(formula_splited) == 1:
+            formulaAb = formulaAb_with_out_operator
+        else:
+            if TemporalFormula.is_neg(temporal_operator[0]):
+                formulaAb = [NEG_OPERATOR, [temporal_operator[1:], formulaAb_with_out_operator]]
+            else:
+                formulaAb = [temporal_operator, formulaAb_with_out_operator]
+        return formulaAb
+        
+        
     
     ################################
 

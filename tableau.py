@@ -37,6 +37,7 @@ class TableauRules:
         if formulaStr == 'X[1]True':
             return ['|', 'aux_var', ['-', 'aux_var']]
         formulaAb = TemporalFormula.getStrToAb(formulaStr, strToAb, **kwargs) 
+        print(formulaStr, "===>", formulaAb)
         if TemporalFormula.is_neg(formulaAb[0], **kwargs):
             return TableauRules.apply_next_rule_to_negative_formula(formulaAb[1], strToAb, **kwargs)
         else:
@@ -140,7 +141,7 @@ class Tableau:
 
         self.env_vars_safety_formula = TemporalFormula.get_env_actual_variables(self.safety_formula.ab)
         self.valid_assignments = TemporalFormula.calculate_dnf(self.env_constraints.ab, **kwargs)
-        self.initial_node = TableauNode(self.initial_formula.ab, None)
+        self.initial_node = TableauNode(self.initial_formula.ab, 0, None)
         self.env_minimal_coverings = dict()
         self.success_nodes = list()
         self.failed_nodes = list()
