@@ -1,9 +1,10 @@
 import random
 import sys
+import time
 
 from matplotlib.pyplot import close
-from tableau import Tableau
-from temporal_formula import TemporalFormula
+from Tableau.tableau import Tableau
+from TemporalFormula.src.temporal_formula import TemporalFormula
 
 
 def automatic_benchmark_generator(n):
@@ -83,8 +84,10 @@ def print_log_time(log_time):
 
 def execute():
     log_time = {}
+    start = time.time()
     initial_formula, safety_formula, env_constraints = leer_fichero()
     Tableau(initial_formula, safety_formula, env_constraints, log_time = log_time)
+    print(time.time()-start)
     print_log_time(log_time)
 
 

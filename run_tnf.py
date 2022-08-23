@@ -1,8 +1,8 @@
 import random
 import sys
-from tableau import Tableau
-from temporal_formula import TemporalFormula
-from tnf import TNF
+from Tableau.src.tableau import Tableau
+from TemporalFormula.src.temporal_formula import TemporalFormula
+from TNF.src.tnf import TNF
 
 
 

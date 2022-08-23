@@ -1,6 +1,6 @@
 from tools import BICA, MiniSAT, ander_to_str, correct_bica_formula
 from time import time
-from circuit import Circuit
+from Solver.circuit import Circuit
 from os import remove
 
 
@@ -34,7 +34,9 @@ def prime_cover_via_BICA(formula,
 
 
     """
+    print("ANtes", formula)
     formula =  correct_bica_formula(formula)
+    print("Despues", formula)
     t0 = time()
 
     # Create a circuit object with the benchmark to be used.

@@ -6,7 +6,9 @@ Created on Wed May 12 19:21:33 2021
 @author: alephnoell
 """
 from cmath import inf
+import csv
 from os import popen, remove
+import sys
 import time
 
 #################################################
@@ -125,7 +127,7 @@ def BICA(pos_name, neg_name, C):
     remove("bica_file.txt")
     return essential_primes, primes_found    
 
-def print_info(info):
+def print_info_map(info):
     print("=========================== INFO ===========================\n")
     for key, value in info.items():
         print(">>", key, ": ", value, "\n")        
@@ -156,19 +158,66 @@ def analysis(method):
 
 def correct_bica_formula(formula):
     if isinstance(formula, str):
-        if formula == 'True' or formula == "X[1]True" or  formula == '-False' or formula == "-X[1]False":
+        if formula == 'True'  or  formula == '-False':
             return ['|', 'aux_var', ['-', 'aux_var']]
-        elif formula == 'False' or formula == "X[1]False" or formula == '-True' or formula == "-X[1]True":
-            print("ffff", formula)
+        elif formula == 'False' or formula == '-True':
             return ['&', 'aux_var', ['-', 'aux_var']]
+        elif formula == "X[1]False":
+            return ['-', 'X[1]True']
         elif formula[0] == "-" and len(formula) > 1:
             return ['-', formula[1:]]
         else:
             return formula
+    elif len(formula) == 2:
+        return  [formula[0], correct_bica_formula(formula[1])]
     else:
-        correct_formula = list()
-        for f_i in formula:
-            correct_formula.append(correct_bica_formula(f_i))
-        return correct_formula
+        assert len(formula) >= 3
+        leftFormula = correct_bica_formula(formula[1])
+        rightFormula = correct_bica_formula(formula[2])
+        op = formula[0]
+        res = [op, leftFormula, rightFormula]
+        if len(formula) > 3:
+            for f in formula[3:]:
+                extra_formula =  correct_bica_formula(f)
+                res.append(extra_formula)
+
+        return res
+
+def read_benchmark_file(path):
+    with open(path, 'r') as f:
+        lines = f.readlines()
+        split_lines = split_formulas(lines)
+    f.close()  
+    return split_lines
 
 
+def split_formulas(lines):
+
+    I = list()
+    G = list()
+    C = list()
+    
+    for line in lines:
+        if line == "\n" or line=="":
+            continue
+        line = line.replace("\n", "").replace(" ", "")
+        if line == "InitialFormula":
+            activate = "I"
+
+        elif line == "SafetyFormula":
+            activate = "G"
+
+        elif line == "EnvironmentGlobalConstraints":
+            activate = "C"
+        else: 
+            if activate == "I":
+                I.append(line) 
+            elif activate == "G":
+                G.append(line)
+            elif activate == "C":
+                C.append(line)
+            else:
+            
+                print("Error en la  line : ", line)
+
+    return I, G, C
