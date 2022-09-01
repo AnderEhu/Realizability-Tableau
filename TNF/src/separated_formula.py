@@ -87,40 +87,37 @@ class SeparatedFormula:
             env_minimal_covering = ['|', AUX_NODE, ["-", AUX_NODE]]
             neg_minimal_covering = ['&', AUX_NODE, ["-", AUX_NODE]]
 
+
         neg_sf1_ab = ['|', SeparatedFormula.neg_separated_formulas_to_ab(sf1, is_sf2_tnf, **kwargs), neg_minimal_covering]
         neg_sf2_ab = ['|', SeparatedFormula.neg_separated_formulas_to_ab(sf2, is_sf2_tnf, **kwargs), neg_minimal_covering]
         
         
 
         sf1_ab = ['&', SeparatedFormula.separated_formulas_to_ab(sf1, is_sf2_tnf, **kwargs), env_minimal_covering]
-        print("SF1: \n-",sf1, "\n-", sf1_ab, "\n")
-        print("NegSF1: \n-",sf1, "\n-", neg_sf1_ab, "\n")
 
         sf2_ab = ['&', SeparatedFormula.separated_formulas_to_ab(sf2, is_sf2_tnf, **kwargs), env_minimal_covering]
-        print("SF2: \n-",sf2, "\n-", sf2_ab, "\n")
-        print("NegSF2: \n-",sf2, "\n-", neg_sf2_ab, "\n")
 
         
 
         f1toAB = ['&', sf2_ab, neg_sf1_ab]
         f2toAB = ['&', sf1_ab, neg_sf2_ab]
 
-        # f = ['|', f1toAB, f2toAB]
-        # print("\nPRIMES: \n",prime_cover_via_BICA(f), "\n")
-        # if TemporalFormula.is_sat(f, **kwargs):
-        #     return False
-        # else:
-        #     return True
-       
-
-        if TemporalFormula.is_sat(f1toAB, **kwargs):
-            print("\nPRIMES1: \n",prime_cover_via_BICA(f1toAB), "\n")
-            return False
-        elif TemporalFormula.is_sat(f2toAB, **kwargs):
-            print("\nPRIMES2: \n",prime_cover_via_BICA(f2toAB), "\n")
+        f = ['|', f1toAB, f2toAB]
+        if TemporalFormula.is_sat(f, **kwargs):
             return False
         else:
             return True
+       
+        
+
+        # if TemporalFormula.is_sat(f1toAB, **kwargs):
+        #     return False
+        # elif TemporalFormula.is_sat(f2toAB, **kwargs):
+        #     return False
+        # else:
+        #     return True
+
+
 
     @staticmethod
     @analysis
@@ -409,9 +406,21 @@ class SeparatedFormula:
 
         return strict_future_next_formulas_next_rule_applied
 
-    
+
+
     @staticmethod
-    def get_separated_formula_compatibles_by_env(env_move, separated_formulas): #Poner en separated formula
+    def get_separated_formula_compatibles_by_env(env_move, separated_formulas):
+        """
+        Given a env_move and separated formulas, it returns the separated formulas compatibles with env_move
+
+        Args:
+            - env_move: set of environment variables 
+            - separated_formula: a separated formula
+
+        Return:
+            Separated formulas compatible with given environment variables valuation.
+
+        """
         compatibles = list()
         for sf in separated_formulas:
             env_sf = sf['X']
@@ -419,8 +428,24 @@ class SeparatedFormula:
                 compatibles.append(sf)
         return compatibles
 
+    
     @staticmethod
     def is_consistent(set_literals_1, set_literals_2, **kwargs):
+        """
+        Given two set of literals, set_literals_1 and set_literals_2, it returns if the conjunction of both is consistent
+        
+        Args:
+            - set_literals_1: set of literals 
+            - set_literals_2:  set of literals 
+        
+        Return:
+            True, if they are consisten, otherwise, False
+
+        Example:
+            if set_literals_1 = {'p_e', 's'} and  set_literals_2 = {'r_e', 's'} then it retuns True (consistent {'p_e', 'r_e', 's'}),
+            whereas,  if set_literals_1 = {'p_e', 's'} and  set_literals_2 = {'r_e', '-s'} then it returns False (inconsistent s and -s)
+
+        """
         if len(set_literals_1) < len(set_literals_2):
             for l in set_literals_1:
                 if TemporalFormula.neg_literal(l, **kwargs) in set_literals_2:

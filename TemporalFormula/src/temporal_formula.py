@@ -87,7 +87,7 @@ class TemporalFormula(NodeVisitor):
         
 
     """
-    def __init__ (self, formulas_str, 
+    def __init__ (self, formulas, 
             changeNegAlwaysEventually = False,
             extract_negs_from_nexts = True, 
             split_futures = False, 
@@ -101,8 +101,8 @@ class TemporalFormula(NodeVisitor):
         self.extract_negs_from_nexts = extract_negs_from_nexts
         self.env_vars = set()
         self.strict_future_formulas = strict_future_formulas
-        self.formulas_str = formulas_str.replace("\t","").replace(" ", "").replace("\n","") #Eliminate spaces, linebreaks and tab
-        self.ab = self.calculate_ab(self.formulas_str, **kwargs)
+        self.formulas = formulas
+        self.ab = self.calculate_ab(self.formulas, **kwargs)
     
 
     
@@ -120,7 +120,16 @@ class TemporalFormula(NodeVisitor):
         return formulas_ab
     
     def __calculate_ab(self, formulas_str, **kwargs):
+        """
+            __calculate_ab transform an input string of a conjunction temporal formulas in an arbitrary form into a list of lists that represent the equivalent NNF temporal formula.
+            Args:
+                formulas_str:  string of a temporal formula in an arbitrary form
+            Returns:
+                Equivalent NNF formula as a list of lists
+                
+        """
         if isinstance(formulas_str, str):
+            formulas_str.replace("\t","").replace(" ", "").replace("\n","") #Eliminate spaces, linebreaks and tab
             ast = self.__parse_formula(formulas_str, **kwargs) #Equivalent abstract sintax tree
             ast_to_ab = self.visit(ast) #Transform ast formula into a list of lists representation
             ab_next_pushed =  TemporalFormula.push_nexts(ast_to_ab, **kwargs) # Push next in front of the atoms
@@ -129,11 +138,11 @@ class TemporalFormula(NodeVisitor):
                 formulas_ab = TemporalFormula.extract_neg_from_nexts(formulas_ab, **kwargs) #Extract negation operator from next formulas
             return formulas_ab
         elif len(formulas_str) == 1:
-            return self.calculate_ab(formulas_str[0], **kwargs)
+            return self.__calculate_ab(formulas_str[0], **kwargs)
         else:
 
             formulas_ab = ['&']
-            formulas_ab += [self.calculate_ab(formula_str, **kwargs) for formula_str in formulas_str]
+            formulas_ab += [self.__calculate_ab(formula_str, **kwargs) for formula_str in formulas_str]
             
             return formulas_ab
 
@@ -187,7 +196,7 @@ class TemporalFormula(NodeVisitor):
 
     def __split_future_at_general_visit(self, children, op):
 
-        limitInf, limitSup = TemporalFormula.get_temporal_op_limits(children[0])
+        limitInf, limitSup = TemporalFormula.get_eventually_always_op_limits(children[0])
         if limitInf == limitSup:
             return TemporalFormula.generate_next(children[1], limitInf, self.extract_negs_from_nexts)
         new_limit_sup = limitSup-1
@@ -366,78 +375,139 @@ class TemporalFormula(NodeVisitor):
     @staticmethod
     @analysis
     def is_neg(op, **kwargs):
+        """
+        Given an operator op return True if op is negation operator, otherwise, False
+        """
         return isinstance(op, str) and op in NEG_OPERATORS
 
     @staticmethod
     @analysis
     def is_and(op, **kwargs):
+        """
+        Given an operator op return True if op is and operator, otherwise, False
+        """
         return isinstance(op, str) and op in AND_OPERATORS
 
     @staticmethod
     @analysis
     def is_or(op, **kwargs):
+        """
+        Given an operator op return True if op is or operator, otherwise, False
+        """
         return isinstance(op, str) and op in OR_OPERATORS
 
     @staticmethod
     @analysis
     def is_next(op, **kwargs):
+        """
+        Given an operator op return True if op is next operator, otherwise, False
+        """
         return isinstance(op, str) and ((op in NEXT_OPERATOR) or (len(op) > 3 and op[0] in NEXT_OPERATORS and op[1] == "["))
 
     @staticmethod
     @analysis
     def is_next_formula(formula, **kwargs):
+        """
+        Given a temporal formula as a list of list, return True if the first element of the list is a next operator, otherwise false.
+        For example:
+            - ['X[3]', 'a'], return True
+            - ['F[1,2]', 'a'] return False
+
+        """
         return TemporalFormula.is_next(formula[0])
     
     @staticmethod
     @analysis
     def is_eventually(op, **kwargs):
+        """
+        Given a temporal formula as a list of list, return True if the first element of the list is a eventually operator, otherwise false.
+        For example:
+            - ['F[1,2]', 'a'] return True
+            - ['X[3]', 'a'], return False
+
+
+        """
         return isinstance(op, str) and  len(op) > 5 and op[0] in EVENTUALLY_OPERATORS and op[1] == "["
     
     @staticmethod
     @analysis
     def is_always(op, **kwargs):
+        """
+        Given a temporal formula as a list of list, return True if the first element of the list is a always operator, otherwise false.
+        For example:
+            - ['G[2,5]', 'a'], return True
+            - ['F[1,2]', 'a'] return False
+
+        """
         return isinstance(op, str) and  len(op) > 5 and op[0] in ALWAYS_OPERATORS and op[1] == "["
     
     @staticmethod
     @analysis
     def is_var_env(var, **kwargs):
+        """
+        Given a variable as a string, return True if var is an environment variable, otherwise, False
+        """
         return len(var) > 2 and var[-2:] == "_e" 
     
     @staticmethod
     @analysis
     def is_true(formula, **kwargs):
+        """
+        Given formula return if formula is a True statement symbol, otherwise, False
+        """
         return isinstance(formula, str) and formula in TRUE_SYMBOLS
     
     @staticmethod
     @analysis
     def is_false(formula, **kwargs):
+        """
+        Given formula return if formula is a False statement symbol, otherwise, False
+        """
         return isinstance(formula, str) and formula in FALSE_SYMBOLS
     
     @staticmethod
     @analysis
     def is_unary(formula, **kwargs):
+        """
+        Given a temporal formula as a list of list, return True if the first element of the list is a unary operator, otherwise false. 
+        Moreover, unary operator are ones that have two elements, first element represent a temporal operator (Next, Eventually or Always)  and second element 
+        a temporal formula.
+        For example:
+            - ['X[3]', 'a'], return True
+            - ['F[1,2]', 'a'] return True
+            - 'a' return False
+            - ['&', ['X[3]', 'a'], 'a']
+        """
         return isinstance(formula, list) and len(formula) == 2
     
     @staticmethod
     @analysis
     def is_binary(formula, **kwargs):
+        """
+        Given a temporal formula as a list of list, return True if the first element of the list is a binary operator, otherwise false. 
+        Moreover, a binary operator are ones that have three elements, first element represent a boolean operator (And or Or) and second/third element 
+        a temporal formula.
+        For example:
+            - ['&', ['X[3]', 'a'], 'a'], return True
+            - ['&', ['X[3]', 'a'], 'a'] return True
+            - ['&', ['F[1,2]', 'a'], 'a'] return True
+            - 'a' return False
+            - ['X[3]', 'a'], return True return False
+            - ['F[1,2]', 'a'] return True return False
+        """
         return isinstance(formula, list) and len(formula) >= 3
     
-    @staticmethod
-    @analysis
-    def is_atom(strFormula, **kwargs):
-        return isinstance(strFormula, str) and TemporalFormula.get_variable(strFormula, **kwargs) == strFormula
+
     
     @staticmethod
     @analysis
     def is_temp_op(op, **kwargs):
+        """
+        Given a operator op as a string, return True if op is a temporal operator, otherwise, False
+        """
         return isinstance(op, str) and (TemporalFormula.is_next(op, **kwargs) or TemporalFormula.is_always(op, **kwargs) or TemporalFormula.is_eventually(op, **kwargs))
     
-    @staticmethod
-    @analysis
-    def is_temp_formula(formula, **kwargs):
-        return isinstance(formula, list) and TemporalFormula.is_temp_op(formula[0], **kwargs)
-    
+
     @staticmethod
     @analysis 
     def is_in_interval_success(phiAb, alphaAb, **kwargs):
@@ -463,48 +533,7 @@ class TemporalFormula(NodeVisitor):
             return (n >= nprima and nprima <= m) and (n <= mprima and mprima >= m)
 
 
-    @staticmethod
-    @analysis
-    def is_implicated(formula_1_ab, formula_2_ab, **kwargs):
-        """
-            Returns if formula_1_ab (temporal formula) subsume formula_2_ab (temporal formula) , ej G[0,4]a subsumes G[0,1]a
-            Args:
-                -formula_1_ab: temporal formula as a list of lists
-                -formula_2_ab: temporal formula as a list of lists
 
-            Returns:
-                True, if formula_1_ab subsumes formula_2_ab, otherwise, False
-
-        """
-
-        neg_formula_2_ab = TemporalFormula.neg_formula_ab(formula_2_ab, changeNegAlwaysEventually=False, **kwargs)
-        possible_contradiction = ['&', formula_1_ab, neg_formula_2_ab]
-
-        prime_implicants = prime_cover_via_BICA(possible_contradiction)
-        fix_prime_implacants = TemporalFormula.fix_prime_implicants_bica(prime_implicants)
-        if not fix_prime_implacants:
-            return True
-        else:
-            #print("VALID: ", prime_implicants)
-            return False
-
-    def is_implicated_strict_formulas(strict_formula_1_ab, strict_formula_2_ab, **kwargs):
-        """
-            1 -> 2, unsat, 1&-2
-        """
-
-        neg_strict_formula_2_ab = TemporalFormula.neg_strict_futures_from_safety_formula(strict_formula_2_ab, **kwargs)
-        ##print(strict_formula_2_ab, " NEG ===>", neg_strict_formula_2_ab, "\n")
-        possible_contradiction = ['&', strict_formula_1_ab, neg_strict_formula_2_ab]
-
-        prime_implicants = prime_cover_via_BICA(possible_contradiction)
-        #print("Prime ", prime_implicants, "\n")
-        fix_prime_implacants = TemporalFormula.fix_prime_implicants_bica(prime_implicants)
-        if not fix_prime_implacants:
-            return True
-        else:
-            #print("VALID: ", prime_implicants)
-            return False
 
     
 
@@ -651,9 +680,7 @@ class TemporalFormula(NodeVisitor):
         # (check first whether it is already a circuit, or whether you need
         # to convert it from a list format given as input).
         C = Circuit()
-        print("Antes", formula)
         formula = correct_bica_formula(formula)
-        print("DESPUES", formula)
         if isinstance(formula, Circuit):
             C = formula
         else:
@@ -668,6 +695,24 @@ class TemporalFormula(NodeVisitor):
 
 
 
+    @staticmethod
+    def is_valid_assignment(assignment, valid_assignments):
+        """
+        Given an assigment of variables and a list of valid assignments, return True if assignment is consistent with valid_assignments, otherwise, False
+        """
+        for valid_assignment in valid_assignments:
+            valid = True
+            neg_literals_valid_assignment = [ TemporalFormula.neg_literal(env_literal) for env_literal in assignment]
+            for neg_literal_valid_assignment in neg_literals_valid_assignment:
+                if neg_literal_valid_assignment in valid_assignment:
+                    valid = False
+                    break
+            if not valid:
+                continue
+            else:
+                return True
+        return False
+
     ################################
 
 
@@ -677,23 +722,27 @@ class TemporalFormula(NodeVisitor):
     @staticmethod
     @analysis
     def get_neg_literal(literal, **kwargs):
+        """
+        Given a literal as a string, return the negation of it.
+        For example:
+            -'a' return '-a'
+            -'-a' return 'a'
+        """
         first_char = literal[0]
         if first_char in NEG_OPERATORS:
             return literal[1:]
         else:
             return "-" + literal
+
     
     @staticmethod
     @analysis
-    def get_variable(literal, **kwargs):
-        if literal[0] == "-":
-            return literal[1:]
-        else:
-            return literal
-    
-    @staticmethod
-    @analysis
-    def get_temporal_op_limits(op, **kwargs):
+    def get_eventually_always_op_limits(op, **kwargs):
+        """
+        Given an always operator or eventually operator as string, return the limits of the given operator, for example:
+        - G[1,2] return (1,2)
+        - F[1,22] return (1,22)
+        """
         limitInf = ""
         limitSup = ""
         start = False
@@ -718,33 +767,32 @@ class TemporalFormula(NodeVisitor):
     @staticmethod
     @analysis
     def get_temporal_limits(formula, **kwargs):
+        """
+        Given a temporal formula (Next, Always or Eventually) return a duple representing the temporal limits of the formula.
+        For example:
+            - G[1,2]a return (1,2)
+            - F[50,200]a return (5,200)
+            - X[10]a return (10,10)
+            - a return (0,0)
+
+        """
         if TemporalFormula.is_next(formula[0], **kwargs):
             cNext = TemporalFormula.get_next_n(formula[0], **kwargs)
             return cNext, cNext
         elif TemporalFormula.is_eventually(formula[0], **kwargs) or TemporalFormula.is_always(formula[0], **kwargs):
-            return TemporalFormula.get_temporal_op_limits(formula[0], **kwargs)
+            return TemporalFormula.get_eventually_always_op_limits(formula[0], **kwargs)
         else:
             return 0, 0
     
     @staticmethod
     @analysis
-    def getStrToList(formulaStr, changeNegAlwaysEventually = False, extract_negs_from_nexts = False, split_futures = False, strict_future_formulas = False, **kwargs):
-        return TemporalFormula(formulaStr, changeNegAlwaysEventually = changeNegAlwaysEventually, extract_negs_from_nexts = extract_negs_from_nexts, split_futures=split_futures, strict_future_formulas=strict_future_formulas, **kwargs).ab
+    def getStrToList(formula_str, changeNegAlwaysEventually = False, extract_negs_from_nexts = False, split_futures = False, strict_future_formulas = False, **kwargs):
+        """
+        Given a temporal formula as string return a list of lists representation of it.
+        """
+        return TemporalFormula(formula_str, changeNegAlwaysEventually = changeNegAlwaysEventually, extract_negs_from_nexts = extract_negs_from_nexts, split_futures=split_futures, strict_future_formulas=strict_future_formulas, **kwargs).ab
     
 
-    @staticmethod
-    @analysis
-    def get_variable(formula, **kwargs):
-        if TemporalFormula.is_temp_op(formula[0], **kwargs):
-            if TemporalFormula.is_eventually(formula, **kwargs):
-                deleteEventuality = formula.split("]", 1)
-                return TemporalFormula.get_variable(deleteEventuality[1], **kwargs)
-            else:
-                return TemporalFormula.get_variable(formula[1:], **kwargs)
-        elif formula[0] == "-":
-            return formula[1:]
-        else :
-            return formula
     
     @staticmethod
     @analysis
@@ -827,7 +875,7 @@ class TemporalFormula(NodeVisitor):
                 else:
                     return set()
             else:
-                limit_inf, _ = TemporalFormula.get_temporal_op_limits(formula[0])
+                limit_inf, _ = TemporalFormula.get_eventually_always_op_limits(formula[0])
                 if limit_inf == 0:
                     return  TemporalFormula.get_env_actual_variables(formula[1])
                 else:
@@ -841,17 +889,6 @@ class TemporalFormula(NodeVisitor):
                     env_actual_assignments =  env_actual_assignments.union(TemporalFormula.get_env_actual_variables(f))
 
             return env_actual_assignments
-
-    @staticmethod
-    @analysis
-    def get_all_dnf_temporal_formulas(dnf, info = dict(), **kwargs):
-        res = set()
-        for model in dnf:
-            for f in model:
-                if TemporalFormula.is_temp_formula(f, **kwargs):
-                    res.add(f)
-        add_info(info, "DNF Temporal Formulas (n): ", len(res))
-        return res
 
     @staticmethod
     @analysis
@@ -873,34 +910,70 @@ class TemporalFormula(NodeVisitor):
 
     @staticmethod
     @analysis
-    def getStrToAb(formulaStr, strToAb, **kwargs):
-        if formulaStr in strToAb:
-            return strToAb[formulaStr]
+    def get_str_to_ab_in_bica(formulaStr, strToAb, **kwargs): # TODO: Unificar con getStrToList
 
-        formula_splited = formulaStr.split("]", 1)
-        assert len(formula_splited) == 1 or len(formula_splited) == 2
-        if len(formula_splited) == 1:
-            formulaStr_with_out_operator = formulaStr
-        else:
-            formulaStr_with_out_operator = formula_splited[1]
-            temporal_operator = formula_splited[0] + "]"
-
-        if formulaStr_with_out_operator not in strToAb:
-            formulaAb_with_out_operator = TemporalFormula(formulaStr_with_out_operator, changeNegAlwaysEventually=False, extract_negs_from_nexts=True,  split_futures = False, strict_future_formulas = False, **kwargs).ab
-            strToAb[formulaStr_with_out_operator] = formulaAb_with_out_operator
-        
-        else:
-            formulaAb_with_out_operator = strToAb[formulaStr_with_out_operator]
-
-        if len(formula_splited) == 1:
-            formulaAb = formulaAb_with_out_operator
-        else:
-            if TemporalFormula.is_neg(temporal_operator[0]):
-                formulaAb = [NEG_OPERATOR, [temporal_operator[1:], formulaAb_with_out_operator]]
+        is_neg = True if TemporalFormula.is_neg(formulaStr[0]) else False
+        formulaStr_split = formulaStr[1:].split("]") if is_neg else formulaStr.split("]")
+        formulaStr_split = [elem + "]" if i < len(formulaStr_split)-1 else elem for i, elem in enumerate(formulaStr_split)]
+        formula_ab = list()
+        if len(formulaStr_split) == 1:
+            if formulaStr_split[0] in strToAb:
+                formula_ab = strToAb[formulaStr_split[0]]
             else:
-                formulaAb = [temporal_operator, formulaAb_with_out_operator]
+                formula_ab = TemporalFormula.get_simple_str_to_ab(formulaStr_split[0], strToAb)
+        elif len(formulaStr_split) == 2:
+            if formulaStr_split[1] in strToAb:
+                last_formula_ab = strToAb[formulaStr_split[1]]
+            else:
+                last_formula_ab = TemporalFormula.get_simple_str_to_ab(formulaStr_split[1], strToAb)
+            formula_ab = [formulaStr_split[0], last_formula_ab]
+
+        elif len(formulaStr_split) == 3:
+            if formulaStr_split[2][:-1] in strToAb:
+                last_formula_ab = strToAb[formulaStr_split[2][:-1]]
+            else:
+                last_formula_ab = TemporalFormula.get_simple_str_to_ab(formulaStr_split[2][:-1], strToAb)
+            formula_ab = [formulaStr_split[0], [formulaStr_split[1][1:], last_formula_ab]]
+
+        else:
+            assert False
         
-        return formulaAb
+        if is_neg:
+            return ['-', formula_ab]
+        else:
+            return formula_ab
+
+    @staticmethod
+    def get_simple_str_to_ab(formula_str, strToAb):
+        if formula_str in strToAb:
+            formula_ab = strToAb[formula_str]
+        else:
+            formula_ab =  TemporalFormula(formula_str, changeNegAlwaysEventually=True, extract_negs_from_nexts=True,  split_futures = False, strict_future_formulas = False).ab
+            strToAb[formula_str] = formula_ab
+        return formula_ab
+
+
+        
+
+    @staticmethod
+    def get_valid_env_valuations(all_assignments, valid_assignments):
+        """
+        Given a list of sets representing all valuation of literals and a list of sets representing valid ones, 
+        return all_assignments compatibles with valid_assignments.
+        For example:
+         - all_assignments = [{'p_e'}, {'-p_e'}] and  valid_assignments = [{'p_e'}] return [{'p_e'}]
+          - all_assignments = [{'p_e'}, {'-p_e'}] and  valid_assignments = [{'p_e', r_e}] return [{'p_e'}]
+        """
+        if not valid_assignments:
+            return all_assignments
+        all_valid_assignments = list()
+        for assignment in all_assignments:
+            if TemporalFormula.is_valid_assignment(assignment, valid_assignments):
+                all_valid_assignments.append(assignment)
+        return all_valid_assignments
+
+    
+
         
         
     
@@ -1001,7 +1074,20 @@ class TemporalFormula(NodeVisitor):
             else:
                 return "-" + literal
 
+    @staticmethod
+    def neg_future_sets_subsumption_ab(f):
+        
 
+        if isinstance(f, str):
+            return TemporalFormula.simple_negation_ab(f)
+        else:
+            if f[0] == '-':
+                return f[1]
+            else:
+                f_i_neg = list()
+                for f_i in f:
+                    f_i_neg.append(TemporalFormula.neg_future_sets_subsumption_ab(f_i))
+                return f_i_neg
 
     
     
@@ -1082,6 +1168,10 @@ class TemporalFormula(NodeVisitor):
             return "X[1]True"
         elif formula_ab[0] == "-":
             return formula_ab[1:]
+        elif formula_ab[0] == AND_OPERATOR:
+            return OR_OPERATOR
+        elif formula_ab[0] == OR_OPERATOR:
+            return AND_OPERATOR
         else:
             return ['-', formula_ab]
     
@@ -1121,16 +1211,26 @@ class TemporalFormula(NodeVisitor):
     @staticmethod
     @analysis
     def set_next_n(n, **kwargs):
+        """
+        Given a integer n return an next^n operator. For example,
+        - n = 5 return 'X[5]'
+        """
         return "X[" + str(n) + "]"
     
     @staticmethod
     @analysis
     def set_always_interval(limitInf, limitSup, **kwargs):
+        """
+        Given two integers representing inferior and superior interval limits return an always operator, G[limitInf, limitSup]
+        """
         return ALWAYS_OPERATOR + "[" + str(limitInf) + "," + str(limitSup) + "]"
     
     @staticmethod
     @analysis
     def set_eventually_interval(limitInf, limitSup, **kwargs):
+        """
+        Given two integers representing inferior and superior interval limits return an eventually operator, F[limitInf, limitSup]
+        """
         return EVENTUALLY_OPERATOR + "[" + str(limitInf) + "," + str(limitSup) + "]"
 
 
@@ -1168,16 +1268,27 @@ class TemporalFormula(NodeVisitor):
     @staticmethod
     @analysis    
     def G_to_F(op, **kwargs):
+        """
+        Given a always operator, G_to_F to an eventually operator. For example,
+         - G[0,1] return F[0,1]
+        """
         return op.replace(ALWAYS_OPERATOR, EVENTUALLY_OPERATOR)
     
     @staticmethod
     @analysis
     def F_to_G(op, **kwargs):
+        """
+        Given a eventually operator, F_to_G to an always operator. For example,
+         - F[0,1] return G[0,1]
+        """
         return op.replace(EVENTUALLY_OPERATOR, ALWAYS_OPERATOR)
 
     @staticmethod
     @analysis
     def to_str(formula, **kwargs):
+        """
+        Given a temporal formula as list of lists return the representation of it as string
+        """
         if isinstance(formula, str):
             return formula
         elif len(formula) == 2:
@@ -1200,6 +1311,24 @@ class TemporalFormula(NodeVisitor):
 
             return res
     
+    @staticmethod
+    def env_valuations_to_ab(env_valuations):
+        """
+        Given a list of sets representing a list of environment valuations return the representation as a temporal formula (list of lists). 
+        Note that list represent Or and sets represents And, for example,
+        - [{'p_e', 'r_e'}, {'-p_e', 'r_e'}] return ['|', ['&', 'p_e', 'r_e'], ['&', '-p_e', 'r_e']]
+        """
+        if not env_valuations:
+            return [OR_OPERATOR, AUX_NODE, NEG_AUX_NODE]
+        env_covering_ab = ['|']
+        for env_valuation in env_valuations:
+            for literal in env_valuation:
+                if TemporalFormula.is_neg(literal[0]):
+                    env_covering_ab.append(['-', literal[1:]])
+                else:
+                    env_covering_ab.append(literal)
+        fix_env_covering_ab = TemporalFormula.fix_ab_list(env_covering_ab)
+        return fix_env_covering_ab  
     
 
     
@@ -1214,12 +1343,14 @@ class TemporalFormula(NodeVisitor):
     @staticmethod
     @analysis
     def calculate_dnf(formula, info = dict(), **kwargs):
+        """
+        Given a formula as a list of lists in an arbitrary form, return the equivalent DNF formula.
+        """
         start = time.time()
         if formula == 'True':
             return list()
         if len(formula) < 3 or isinstance(formula, str):
             formula = ['&', formula, formula]
-        print(formula)
         dnf = prime_cover_via_BICA(formula)
         add_info(info, "DNF(s): ", time.time()-start)
         add_info(info, "DNF(n): ", len(dnf))
@@ -1248,14 +1379,14 @@ class TemporalFormula(NodeVisitor):
         nexts = TemporalFormula.get_next_n(formula_ab[0], **kwargs)
         if len(formula_ab[1]) == 2:
             if TemporalFormula.is_always(formula_ab[1][0], **kwargs):
-                limitInf, limitSup = TemporalFormula.get_temporal_op_limits(formula_ab[1][0], **kwargs)
+                limitInf, limitSup = TemporalFormula.get_eventually_always_op_limits(formula_ab[1][0], **kwargs)
                 newLimitInf = str(limitInf + nexts)
                 newLimitSup = str(limitSup + nexts)
 
                 return [ALWAYS_OPERATOR + "[" +newLimitInf+","+newLimitSup+ "]", formula_ab[1][1]]
         
             elif TemporalFormula.is_eventually(formula_ab[1][0]):
-                limitInf, limitSup = TemporalFormula.get_temporal_op_limits(formula_ab[1][0], **kwargs)
+                limitInf, limitSup = TemporalFormula.get_eventually_always_op_limits(formula_ab[1][0], **kwargs)
                 newLimitInf = str(limitInf + nexts)
                 newLimitSup = str(limitSup + nexts)
 
@@ -1307,7 +1438,7 @@ class TemporalFormula(NodeVisitor):
                 return ['X[1]', [op_next_minus_1, formula_ab[1]]]
         else:
             assert TemporalFormula.is_always(formula_ab[0], **kwargs) or TemporalFormula.is_eventually(formula_ab[0], **kwargs)
-            limitInf, limitSup = TemporalFormula.get_temporal_op_limits(formula_ab[0], **kwargs)
+            limitInf, limitSup = TemporalFormula.get_eventually_always_op_limits(formula_ab[0], **kwargs)
             if limitInf == limitSup:
                 return TemporalFormula.generate_next(formula_ab[1], limitInf, **kwargs)
             new_limit_sup = limitSup-1
@@ -1323,6 +1454,23 @@ class TemporalFormula(NodeVisitor):
             else:
                 return [OR_OPERATOR, left_children, right_children]
 
-        
+    
+
 
     ################################
+
+    ###################################
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+    ##################333333333

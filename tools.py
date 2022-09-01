@@ -5,10 +5,7 @@ Created on Wed May 12 19:21:33 2021
 
 @author: alephnoell
 """
-from cmath import inf
-import csv
 from os import popen, remove
-import sys
 import time
 
 #################################################

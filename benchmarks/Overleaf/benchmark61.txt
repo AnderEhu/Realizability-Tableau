@@ -1,9 +1,9 @@
 Initial Formula
-(-g2)&((g2)|((F[1,2](g2))))&((g2)|(X[1](g2)))
+True
+
 Safety Formula
-r1_e -> F[0,3]g1
-r2_e -> F[0,3]g2
--(g1 & g2)
-(-r1_e & r2_e) -> X-g2
+(p0_e & p1_e ) -> (G[10,110](s0))
+
+
 Environment Global Constraints
 True

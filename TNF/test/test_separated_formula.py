@@ -582,3 +582,43 @@ def test_1_dnf_to_Sf(dnf, sfs):
         assert True
     else:
         assert False
+
+
+consistent_set_variables = {
+    1 : [{'p_e', 's', 'l'}, {'r_e', 'p', 'k'}],
+    2 : [{'p_e', 's', 'l'}, {'p_e', 'p', 'k'}],
+    3 : [{'pppppp_e', 'sssss', 'llllll'}, {'rrrrr_e', 'plasdfas', 'kferfefe'}],
+    4 : [{'pppppp_e', 'sssss', 'llllll', 'p_e', 's', 'l'}, {'rrrrr_e', 'plasdfas', 'kferfefe','r_e', 'p', 'k', 'p_e', 's', 'l'}],
+    5 : [{'p_e'}, {}],
+    6 : [{}, {}],
+
+
+}
+
+@pytest.mark.parametrize(
+    "set_literals_1, set_literals_2", [(value[0], value[1]) for _, value in consistent_set_variables.items()]
+)
+def test_consistent_set_variables(set_literals_1, set_literals_2):
+    is_consistent_sets = SeparatedFormula.is_consistent(set_literals_1, set_literals_2)
+    if is_consistent_sets:
+        assert True
+    else:
+        assert False
+
+
+inconsistent_set_variables = {
+    1 : [{'p_e', 's', 'l'}, {'-p_e', 'p', 'k'}],
+    2 : [{'pppppp_e', '-sssss', 'llllll', 'p_e', 's', 'l'}, {'rrrrr_e', 'sssss', 'kferfefe','r_e', 'p', 'k', 'p_e', 's', 'l'}],
+
+}
+
+@pytest.mark.parametrize(
+    "set_literals_1, set_literals_2", [(value[0], value[1]) for _, value in inconsistent_set_variables.items()]
+)
+def test_inconsistent_set_variables(set_literals_1, set_literals_2):
+    is_consistent_sets = SeparatedFormula.is_consistent(set_literals_1, set_literals_2)
+    if not is_consistent_sets:
+        assert True
+    else:
+        assert False
+

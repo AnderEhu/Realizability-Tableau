@@ -102,7 +102,7 @@ test_get_temporal_limits_expected = {
     "bounded_temporal_operator", list(test_get_temporal_limits_expected.keys())
 )
 def test_get_temporal_limits(bounded_temporal_operator):
-    interval = TemporalFormula.get_temporal_op_limits(bounded_temporal_operator)
+    interval = TemporalFormula.get_eventually_always_op_limits(bounded_temporal_operator)
     assert interval == test_get_temporal_limits_expected[bounded_temporal_operator]
 
 test_get_next_n_expected = {

@@ -34,9 +34,7 @@ def prime_cover_via_BICA(formula,
 
 
     """
-    print("ANtes", formula)
     formula =  correct_bica_formula(formula)
-    print("Despues", formula)
     t0 = time()
 
     # Create a circuit object with the benchmark to be used.

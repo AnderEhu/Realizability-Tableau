@@ -10,7 +10,7 @@ class TableauRules:
     def next(formulaStr, strToAb, **kwargs):
         if formulaStr == 'X[1]True':
             return ['|', 'aux_var', ['-', 'aux_var']]
-        formulaAb = TemporalFormula.getStrToAb(formulaStr, strToAb, **kwargs) 
+        formulaAb = TemporalFormula.get_str_to_ab_in_bica(formulaStr, strToAb, **kwargs) 
         #print(formulaStr, "===>", formulaAb)
         if TemporalFormula.is_neg(formulaAb[0], **kwargs):
             return TableauRules.apply_next_rule_to_negative_formula(formulaAb[1], strToAb, **kwargs)
@@ -25,9 +25,6 @@ class TableauRules:
         else:
             assert TemporalFormula.is_always(formulaAb[0], **kwargs) or TemporalFormula.is_eventually(formulaAb[0], **kwargs)
             return TableauRules.apply_next_rule_to_eventually_or_always_positive_formula(formulaAb, strToAb, **kwargs)
-
-
-
         
 
     @staticmethod
@@ -50,7 +47,7 @@ class TableauRules:
     @staticmethod
     @analysis
     def apply_next_rule_to_eventually_or_always_positive_formula(formulaAb, strToAb, **kwargs):
-        limitInf, limitSup = TemporalFormula.get_temporal_op_limits(formulaAb[0])
+        limitInf, limitSup = TemporalFormula.get_eventually_always_op_limits(formulaAb[0])
         new_limitInf, new_limitSup = limitInf - 1, limitSup - 1
         if new_limitInf > 0:
             if TemporalFormula.is_always(formulaAb[0]):
@@ -68,9 +65,6 @@ class TableauRules:
                     return [AND_OPERATOR, formulaAb[1], [TemporalFormula.set_always_interval(new_limitInf+1, new_limitSup,  **kwargs), formulaAb[1]]]
                 else:
                     return [OR_OPERATOR, formulaAb[1], [TemporalFormula.set_eventually_interval(new_limitInf+1, new_limitSup, **kwargs), formulaAb[1]]]
-
-            
-
     
             
     @staticmethod
@@ -80,7 +74,7 @@ class TableauRules:
 
     @staticmethod
     @analysis
-    def apply_next_rule_to_strict_formulas(strict_future_formulas, strToAb, **kwargs):
+    def apply_next_rule_to_list_strict_formulas_sets(strict_future_formulas, strToAb, **kwargs):
 
         strict_future_next_formulas = [OR_OPERATOR]
         for or_strict_formula in strict_future_formulas:

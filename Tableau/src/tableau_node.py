@@ -1,3 +1,5 @@
+from TNF.src.inconsistencies import Inconsistencies
+from TNF.src.subsumptions import Subsumptions
 from TemporalFormula.src.temporal_formula import TemporalFormula
 from tools import analysis
 
@@ -17,12 +19,12 @@ class TableauNode:
         if not prev_node:
             return None
         else:
-            is_actual_node_implicated = TemporalFormula.is_implicated(prev_node.formula, self.formula, **kwargs)
+            is_actual_node_implicated = Subsumptions.is_implicated(prev_node.formula, self.formula, **kwargs)
             if is_actual_node_implicated:
-                #print(prev_node.formula, " IMPLIES ", self.formula)
+                print(prev_node.formula, " IMPLIES ", self.formula)
                 return prev_node.depth
             else:
-                #print(prev_node.formula, " NOT IMPLIES ", self.formula)
+                print(prev_node.formula, " NOT IMPLIES ", self.formula)
                 return self.is_implicated_by_a_previous_node(prev_node.previous_node, **kwargs)
 
     def is_implicated_by_success_nodes(self, success_nodes, strToAb):
@@ -35,7 +37,8 @@ class TableauNode:
         
     def is_implicated_by_a_success_node(self, success_node, strToAb):
         success_node_ab = strToAb[success_node]
-        if TemporalFormula.is_implicated(success_node_ab, self.formula):
+        if Subsumptions.is_implicated(success_node_ab, self.formula):
+            print(success_node_ab, " IMPLIES ", self.formula)
             return True
         else:
             return False
@@ -50,8 +53,8 @@ class TableauNode:
 
     def implicate_a_failure_node(self, failure_node, strToAb):
         failure_node_ab = strToAb[failure_node]
-        if TemporalFormula.is_implicated(self.formula, failure_node_ab):
-            print("FAILURE: ", self.formula, "IS IMPLICATED", failure_node_ab)
+        if Subsumptions.is_implicated(self.formula, failure_node_ab):
+            #print("FAILURE: ", self.formula, "IS IMPLICATED", failure_node_ab)
             return True
         else:
             return False
@@ -63,8 +66,8 @@ class TableauNode:
         if node is None:
             return False
         if not node.previous_node:
-            success_node_ab = TemporalFormula.getStrToAb(success_node, strToAb)
-            if TemporalFormula.is_implicated(success_node_ab, node.formula):
+            success_node_ab = TemporalFormula.get_simple_str_to_ab(success_node, strToAb)
+            if Subsumptions.is_implicated(success_node_ab, node.formula):
                 return node.depth
             else:
                 return False
@@ -74,8 +77,8 @@ class TableauNode:
             if success_previous:
                 return success_previous
             else:
-                success_node_ab = TemporalFormula.getStrToAb(success_node, strToAb)
-                if TemporalFormula.is_implicated(success_node_ab, node.formula):
+                success_node_ab = TemporalFormula.get_simple_str_to_ab(success_node, strToAb)
+                if Subsumptions.is_implicated(success_node_ab, node.formula):
                     return node.depth
                 else:
                     return False
@@ -87,8 +90,8 @@ class TableauNode:
         if node is None:
             return False
         if not node.previous_node:
-            failed_node_ab = TemporalFormula.getStrToAb(failed_node, strToAb)
-            if TemporalFormula.is_implicated(node.formula, failed_node_ab):
+            failed_node_ab = TemporalFormula.get_simple_str_to_ab(failed_node, strToAb)
+            if Subsumptions.is_implicated(node.formula, failed_node_ab):
                 return node.depth
             else:
                 return False
@@ -98,8 +101,8 @@ class TableauNode:
             if success_previous:
                 return success_previous
             else:
-                failed_node_ab = TemporalFormula.getStrToAb(failed_node, strToAb)
-                if TemporalFormula.is_implicated(node.formula, failed_node_ab):
+                failed_node_ab = TemporalFormula.get_simple_str_to_ab(failed_node, strToAb)
+                if Subsumptions.is_implicated(node.formula, failed_node_ab):
                     return node.depth
                 else:
                     return False
