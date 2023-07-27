@@ -1,8 +1,9 @@
 Initial Formula
 True
-
 Safety Formula
-(p0_e & p1_e & p2_e & p3_e & p4_e ) -> (G[1,10](s0) )
-
+r1_e -> F[0,3]g1
+r2_e -> F[0,3]g2
+-(g1 & g2)
+(-r1_e & -r2_e) -> X-g2
 Environment Global Constraints
 True

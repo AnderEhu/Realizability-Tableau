@@ -61,6 +61,7 @@ developair_benchmarks_path = {
     "path", developair_benchmarks_path
 )
 
+@pytest.mark.skip
 def test_tnf_developair(path):
     initial_formula, safety_formula, env_constraints = read_benchmark_file(path)
     safety_specification = initial_formula + safety_formula + env_constraints

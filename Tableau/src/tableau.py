@@ -29,7 +29,7 @@ class Tableau:
         self.env_constraints = TemporalFormula(env_constraints_str, changeNegAlwaysEventually = True,  extract_negs_from_nexts = True, split_futures = False, strict_future_formulas=True, **kwargs)
         self.initial_formula = TemporalFormula(initial_formula_str, changeNegAlwaysEventually = True,  extract_negs_from_nexts = True, split_futures = False, strict_future_formulas=True, **kwargs)
 
-        self.env_vars_safety_formula = TemporalFormula.get_env_actual_variables(self.safety_formula.ab)
+        self.environment_safety_formula_variables = TemporalFormula.get_environment_current_variables(self.safety_formula.ab)
         self.valid_assignments = TemporalFormula.calculate_dnf(self.env_constraints.ab, **kwargs)
         self.initial_node = TableauNode(self.initial_formula.ab, 1, None)
 
@@ -52,7 +52,7 @@ class Tableau:
             self.strToAb[node_formula_str] = node.formula
 
             if node.implicate_a_failure_nodes(self.failed_nodes, self.strToAb):
-                print("IMPLICATED A FAILED NODE")
+                print("IMPLICATE A FAILED NODE")
                 return False
 
             if node.is_implicated_by_success_nodes(self.success_nodes, self.strToAb):
@@ -62,25 +62,27 @@ class Tableau:
                 print("OPEN BRANCH")
                 return True
                 
-            env_vars_node = frozenset(self.env_vars_safety_formula.union(TemporalFormula.get_env_actual_variables(node.formula)))
+            env_vars_node = frozenset(self.environment_safety_formula_variables.union(TemporalFormula.get_environment_current_variables(node.formula)))
 
             node_tnf = self.calculate_tnf_with_node(node.formula, env_vars_node, **kwargs)
+
+            TNF.print_tnf(node_tnf)
             
             if MinimalCovering.is_not_X_covering(node_tnf):
                 print("NO MINIMAL COVERING, NODE CLOSED")
                 return False
             else:
-                env_assigments_sorted, minimal_X_covering_iterator = MinimalCovering.sort_minimal_coverings(node_tnf)
+                env_valuations_sorted, minimal_X_coverings_iterator = MinimalCovering.sort_minimal_coverings(node_tnf)
                 
-                for minimal_X_covering in minimal_X_covering_iterator:
+                for minimal_X_covering in minimal_X_coverings_iterator:
                     i_env_assignment = 1
                     minimal_X_covering = list(minimal_X_covering)
                     minimal_X_covering.reverse()
-                    env_assigments_sorted.reverse()
+                    env_valuations_sorted.reverse()
                     is_open = False
                     for i, child in enumerate(minimal_X_covering):
 
-                        env_assignment = env_assigments_sorted[i]
+                        env_assignment = env_valuations_sorted[i]
                         strict_futures_i = Inconsistencies.delete_inconsistent_sets(child[1], self.inconsistencies, self.strToAb)
                         if not strict_futures_i: break
 
@@ -91,10 +93,10 @@ class Tableau:
                         is_open = self.tableau(child_node, SYSTEM_PLAYING, depth, **kwargs)
 
                         if is_open is False:
-                            print("IS CLOSED For ", env_assignment,  i_env_assignment, " / ", len(env_assigments_sorted), "environment assignment",  "Depth: ", depth)
+                            print("IS CLOSED For ", env_assignment,  i_env_assignment, " / ", len(env_valuations_sorted), "environment assignment",  "Depth: ", depth)
                             break
                         elif is_open is True:
-                            print("IS OPEN For ", env_assignment,  i_env_assignment, " / ", len(env_assigments_sorted), "environment assignment",  "Depth: ", depth)
+                            print("IS OPEN For ", env_assignment,  i_env_assignment, " / ", len(env_valuations_sorted), "environment assignment",  "Depth: ", depth)
                             i_env_assignment+=1
                         elif depth == int(abs(is_open)) and is_open > 0:
                             print("A LOWER TABLEAU NODE OPEN THIS NODE")
@@ -128,7 +130,7 @@ class Tableau:
                     else:
                         print("MINIMAL COVERING FAILED")
                         try:
-                            next(minimal_X_covering_iterator)
+                            next(minimal_X_coverings_iterator)
                             print("CHANGING TO ANOTHER MINIMAL COVERING")
                         except StopIteration:
                             print("NO MINIMAL COVERING: FAILED NODE")
@@ -141,7 +143,7 @@ class Tableau:
                             else:
                                 print("NO PREVIOUS STRONGER NODE DETECTED")
                                 return False
-            
+            return False
 
 
 

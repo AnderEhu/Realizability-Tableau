@@ -41,7 +41,7 @@ class MinimalCovering:
         env_valuations_sorted = [i for _,i in sorted(env_valuations_scores, reverse=True)]
         tnf_sorted = list()
         for env_valuation in env_valuations_sorted:
-            print(env_valuation, env_valuations_with_sorted_strict_futures[env_valuation])
+            #print(env_valuation, env_valuations_with_sorted_strict_futures[env_valuation])
             tnf_sorted.append(env_valuations_with_sorted_strict_futures[env_valuation])
         return env_valuations_sorted, itertools.product(*tnf_sorted)
 

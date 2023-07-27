@@ -1,10 +1,8 @@
 Initial Formula
-a
+True
 
 Safety Formula
-a -> c
-p_e -> F[0,100]-c
--p_e -> F[0,100]a
+(p_e & s & G[1,1000]t & Xs) | (-p_e & s & G[1,1000]t & XXs) | (-s & G[1,1000]-s)
 
 Environment Global Constraints
 True

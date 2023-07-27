@@ -849,7 +849,7 @@ class TemporalFormula(NodeVisitor):
 
     @staticmethod
     @analysis
-    def get_env_actual_variables(formula, **kwargs):
+    def get_environment_current_variables(formula, **kwargs):
         """
         Given a temporal formula as a list of lists, it returns the set of environment variables that take part in the present 
 
@@ -867,26 +867,26 @@ class TemporalFormula(NodeVisitor):
                 return set()
         elif len(formula) == 2:
             if TemporalFormula.is_neg(formula[0]):
-                return  TemporalFormula.get_env_actual_variables(formula[1])
+                return  TemporalFormula.get_environment_current_variables(formula[1])
             elif TemporalFormula.is_next(formula[0]):
                 n = TemporalFormula.get_next_n(formula[0])
                 if n == 0:
-                    return  TemporalFormula.get_env_actual_variables(formula[1])
+                    return  TemporalFormula.get_environment_current_variables(formula[1])
                 else:
                     return set()
             else:
                 limit_inf, _ = TemporalFormula.get_eventually_always_op_limits(formula[0])
                 if limit_inf == 0:
-                    return  TemporalFormula.get_env_actual_variables(formula[1])
+                    return  TemporalFormula.get_environment_current_variables(formula[1])
                 else:
                     return set()
         else:
-            left_Formula_Env = TemporalFormula.get_env_actual_variables(formula[1])
-            right_Formula_Env = TemporalFormula.get_env_actual_variables(formula[2])
+            left_Formula_Env = TemporalFormula.get_environment_current_variables(formula[1])
+            right_Formula_Env = TemporalFormula.get_environment_current_variables(formula[2])
             env_actual_assignments = left_Formula_Env.union(right_Formula_Env)
             if len(formula) > 3:
                 for f in formula[3:]:
-                    env_actual_assignments =  env_actual_assignments.union(TemporalFormula.get_env_actual_variables(f))
+                    env_actual_assignments =  env_actual_assignments.union(TemporalFormula.get_environment_current_variables(f))
 
             return env_actual_assignments
 

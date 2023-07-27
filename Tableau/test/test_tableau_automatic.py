@@ -5,7 +5,7 @@ from tools import read_benchmark_file
 
 
 developair_benchmarks_path = {
-    "benchmarks/Automatic/benchmark1.txt",
+    "benchmarks/Automatic/Realizable/benchmark_8_8_[1,10].txt",
 
 
 }

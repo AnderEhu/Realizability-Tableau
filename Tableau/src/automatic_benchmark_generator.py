@@ -12,6 +12,12 @@ class AutomaticBenchMarkGenerator:
             path = "benchmarks/Automatic/Unrealizable/benchmark_"+str(n_env)+"_"+str(m_sys)+"_"+sys_interval_str+".txt"
             
         f = open(path, "w")
+        f.write("Initial Formula")
+        f.write("\n")
+        f.write("True")
+        f.write("\n\n")
+        f.write("Safety Formula")
+        f.write("\n")
         formula_i_left_part = "("
         for i in range(0, n_env):
             env_var = "p" + str(i) + "_e"            
@@ -34,14 +40,27 @@ class AutomaticBenchMarkGenerator:
             f.write("\n")
             f.write(formula_for_unrealizability)
 
+        f.write("\n\n")
+        f.write("Environment Global Constraints")
+        f.write("\n")
+        f.write("True")
+
+
         f.close()
 
 
 
 def create_file_with_automatic_benchmarks(n_env_list, m_sys_list, sys_interval_list):
-
     for n_env in range(1, n_env_list+1):
         for m_sys in range(1, m_sys_list+1):
+            for sys_interval in sys_interval_list:
+                AutomaticBenchMarkGenerator.automatic_benchmark(n_env, m_sys, sys_interval, realizable=True)
+                AutomaticBenchMarkGenerator.automatic_benchmark(n_env, m_sys, sys_interval, realizable=False)
+
+def create_file_with_specific_automatic_benchmarks(n_env_list, m_sys_list, sys_interval_list):
+
+    for n_env in n_env_list:
+        for m_sys in m_sys_list:
             for sys_interval in sys_interval_list:
                 AutomaticBenchMarkGenerator.automatic_benchmark(n_env, m_sys, sys_interval, realizable=True)
                 AutomaticBenchMarkGenerator.automatic_benchmark(n_env, m_sys, sys_interval, realizable=False)
@@ -49,7 +68,7 @@ def create_file_with_automatic_benchmarks(n_env_list, m_sys_list, sys_interval_l
 
 
 
-create_file_with_automatic_benchmarks(10, 10, [[1,10], [1,1000]])
+create_file_with_specific_automatic_benchmarks([1, 3, 5, 8], [1, 3, 5, 8], [[1,10], [1,1000]])
         
 
 

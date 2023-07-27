@@ -2,7 +2,10 @@ Initial Formula
 True
 
 Safety Formula
-(p0_e & p1_e & p2_e & p3_e & p4_e ) -> (G[1,10](s0) )
+c
+-p_e -> G[0,9]c
+G[0,9]c | F[0,2]-c
 
 Environment Global Constraints
-True
+r_e
+p_e -> r_e

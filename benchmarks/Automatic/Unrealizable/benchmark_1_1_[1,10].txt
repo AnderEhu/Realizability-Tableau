@@ -1,2 +1,9 @@
+Initial Formula
+True
+
+Safety Formula
 (p0_e ) -> (G[1,10](s0) )
 F[1,10](-s0)
+
+Environment Global Constraints
+True

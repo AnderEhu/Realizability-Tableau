@@ -68,7 +68,7 @@ class TNF:
             self.env_vars = env_vars
             self.all_env_valuations = TemporalFormula.get_all_assignments(self.env_vars,**kwargs)
         else:
-            self.env_vars = TemporalFormula.get_env_actual_variables(self.formula)
+            self.env_vars = TemporalFormula.get_environment_current_variables(self.formula)
             self.all_env_valuations = TemporalFormula.get_all_assignments(self.env_vars,**kwargs)
 
         if valid_env_valuations is None:
@@ -91,6 +91,7 @@ class TNF:
 
         # Next, the equvialent DNF of formula is calculated
         self.dnf = TemporalFormula.calculate_dnf(self.formula, self.info, **kwargs)
+
 
         #After that we transform to a separated formula representation
         self.separated_formulas = SeparatedFormula.dnf_to_sf(self.dnf, **kwargs)
@@ -152,15 +153,22 @@ class TNF:
         for key, value in tnf.items():
             print(key, ": ", len(value))
             for v in value:
-                print("============>", v[0])
-                for vi in v[1]:
-                    print("============>", vi)
-                print("\n")
+                print("============>", v)
 
             print("\n")
 
 
+    @staticmethod
+    def print_tnf(tnf, **kwargs):
+        """
+        Print TNF
+        """
+        for key, value in tnf.items():
+            print(key, ": ", len(value))
+            for v in value:
+                print("============>", v)
 
+            print("\n")
 
                 
 
