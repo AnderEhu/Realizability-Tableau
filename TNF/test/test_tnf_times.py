@@ -1,10 +1,4 @@
-from asyncio import futures
-from pickle import TRUE
-from time import daylight
 import pytest
-from sklearn.utils import shuffle
-from Solver.bica import prime_cover_via_BICA
-from TNF.src.separated_formula import SeparatedFormula
 
 from TNF.src.tnf import TNF
 from TemporalFormula.src.temporal_formula import TemporalFormula

@@ -1,4 +1,3 @@
-from TNF.src.inconsistencies import Inconsistencies
 from TNF.src.subsumptions import Subsumptions
 from TemporalFormula.src.temporal_formula import TemporalFormula
 from tools import analysis

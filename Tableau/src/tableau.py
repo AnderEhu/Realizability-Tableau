@@ -1,5 +1,4 @@
 
-from numpy import Inf
 from TNF.src.inconsistencies import Inconsistencies
 from Tableau.src.minimal_covering import MinimalCovering
 from Tableau.src.tableau_node import TableauNode

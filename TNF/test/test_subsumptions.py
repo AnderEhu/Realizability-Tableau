@@ -1,4 +1,3 @@
-from asyncio import futures
 import pytest
 
 from TNF.src.subsumptions import Subsumptions

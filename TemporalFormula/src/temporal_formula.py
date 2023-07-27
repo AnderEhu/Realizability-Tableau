@@ -1,6 +1,4 @@
-import copy
 import itertools
-from posixpath import split
 import sys
 import time
 from numpy import fix
@@ -129,7 +127,7 @@ class TemporalFormula(NodeVisitor):
                 
         """
         if isinstance(formulas_str, str):
-            formulas_str.replace("\t","").replace(" ", "").replace("\n","") #Eliminate spaces, linebreaks and tab
+            formulas_str  = formulas_str.replace("\t","").replace(" ", "").replace("\n","") #Eliminate spaces, linebreaks and tab
             ast = self.__parse_formula(formulas_str, **kwargs) #Equivalent abstract sintax tree
             ast_to_ab = self.visit(ast) #Transform ast formula into a list of lists representation
             ab_next_pushed =  TemporalFormula.push_nexts(ast_to_ab, **kwargs) # Push next in front of the atoms

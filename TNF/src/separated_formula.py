@@ -1,5 +1,3 @@
-from traceback import print_tb
-from Solver.bica import prime_cover_via_BICA
 from TemporalFormula.src.temporal_formula import AND_OPERATORS, AUX_NODE, NEG_AUX_NODE, OR_OPERATOR, OR_OPERATORS, TemporalFormula
 from tools import analysis
 

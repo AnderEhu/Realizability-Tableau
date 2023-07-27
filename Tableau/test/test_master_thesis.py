@@ -1,4 +1,3 @@
-import glob
 import pytest
 from Tableau.src.tableau import Tableau
 

@@ -1,16 +1,8 @@
 
-from ast import literal_eval
-import copy
-from copyreg import remove_extension
-import random
-
-from scipy import rand
-from TNF.src.inconsistencies import Inconsistencies
 from TNF.src.subsumptions import Subsumptions
 
-from Tableau.src.minimal_covering import MinimalCovering
 
-from TemporalFormula.src.temporal_formula import AUX_NODE, NEG_AUX_NODE, OR_OPERATOR, TemporalFormula
+from TemporalFormula.src.temporal_formula import TemporalFormula
 from TNF.src.separated_formula import SeparatedFormula
 from tools import print_info_map, analysis
 
